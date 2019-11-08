@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="style.css">
+  <title>CodeJam - Pallete</title>
+</head>
+<body>
+  <header class="header">
+    <nav class="nav">
+      <img class="nav__icon" src="assets/img/nav-icon.svg" alt="">
+    </nav>
+    <h1 class="header__heading">CodeJam - Pallete</h1>
+    <div class="menu">
+      <img class="menu__icon" src="assets/img/menu-icon.svg" alt="">
+    </div>
+  </header>
+  <main class="main">
+    <section class="sheets-container">
+      <div class="sheet">
+        <ul class="sheet__list">
+          <li class="tool sheet__tool">
+            <img src="assets/img/paint-bucket.svg" alt="" class="tool__icon">
+            <span class="tool__name">Paint bucket</span>
+          </li>
+          <li class="tool sheet__tool">
+            <img src="assets/img/eye-dropper.svg" alt="" class="tool__icon">
+            <span class="tool__name">Choose color</span>
+          </li>
+          <div class="divider"></div>
+          <li class="tool sheet__tool">
+            <img src="assets/img/arrows-alt.svg" alt="" class="tool__icon">
+            <span class="tool__name">Move</span>
+          </li>
+          <li class="tool sheet__tool">
+            <img src="assets/img/exchange-alt.svg" alt="" class="tool__icon">
+            <span class="tool__name">Transform</span>
+          </li>
+        </ul>
+      </div>
+      <div class="sheet">
+        <ul class="sheet__list">
+          <li class="color sheet__color">
+            <div class="color__icon color__icon_current"></div>
+            <span class="color__text">Current color</span>
+          </li>
+          <li class="color sheet__color">
+              <div class="color__icon color__icon_prev"></div>
+              <span class="color__text">Prev color</span>
+          </li>
+          <div class="divider"></div>
+          <li class="color sheet__color">
+            <div class="color__icon color__icon_red"></div>
+            <span class="color__text">red</span>
+          </li>
+          <li class="color sheet__color">
+            <div class="color__icon color__icon_blue"></div>
+            <span class="color__text">blue</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+    <section class="canvas-container">
+      <canvas class="canvas" id="canvas" width="512" height="512"></canvas>
+    </section>
+    <section class="size-switchers-container">
+      <div class="sheet">
+        <ul class="sheet__list">
+          <li class="size-switcher sheet__size-switcher" id="size4">
+            <img src="assets/img/paint-bucket.svg" alt="" class="size-switcher__icon">
+            <span class="size-switcher__name">4x4</span>
+          </li>
+          <li class="size-switcher sheet__size-switcher" id="size32">
+            <img src="assets/img/eye-dropper.svg" alt="" class="size-switcher__icon">
+            <span class="size-switcher__name">32x32</span>
+          </li>
+          <li class="size-switcher sheet__size-switcher" id="size256">
+            <img src="assets/img/arrows-alt.svg" alt="" class="size-switcher__icon">
+            <span class="size-switcher__name">256x256</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
