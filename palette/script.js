@@ -1,6 +1,10 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const colorSwitcher = document.querySelector('.color__icon_current');
+const prevColor = document.querySelector('.color__icon_prev');
+const red = document.querySelector('.color__icon_red')
+const blue = document.querySelector('.color__icon_blue')
+let lastColor = colorSwitcher.value;
 
 function buildCanvas(size, color = '#D3D3D3') {
   let map = [];
@@ -13,7 +17,14 @@ function buildCanvas(size, color = '#D3D3D3') {
   return map;
 }
 
+let map = [];
 map = buildCanvas(4);
+if (window.localStorage.getItem('map') === null) {
+  map = buildCanvas(4);
+} else {
+  map = window.localStorage.getItem('map').split(',');
+  map = _.chunk(map, 4);
+}
 
 drawHex(map, 512 / map.length);
 
@@ -70,6 +81,24 @@ canvas.addEventListener('click', (e) => {
     let x = Math.floor(e.offsetX / pixelSize);
     let y = Math.floor(e.offsetY / pixelSize);
     colorSwitcher.value = map[x][y];
+    prevColor.value = lastColor;
+    lastColor = colorSwitcher.value;
+  }
+
+  window.localStorage.setItem('map', map);
+})
+
+document.addEventListener('click', (e) => {
+  if (e.target === red) {
+    lastColor = red.value;
+    prevColor.value = colorSwitcher.value;
+    colorSwitcher.value = red.value;
+  }
+
+  if (e.target === blue) {
+    lastColor = blue.value;
+    prevColor.value = colorSwitcher.value;
+    colorSwitcher.value = blue.value;
   }
 })
 
@@ -98,4 +127,25 @@ canvas.addEventListener('mousemove', (e) => {
 
 canvas.addEventListener('mouseup', () => {
   isDrawing = false;
+})
+
+document.addEventListener('keydown', (e) => {
+  if (e.code === 'KeyB') {
+    instrument = 0;
+    toolButtons.forEach((el) => el.classList.remove('sheet__tool_selected'));
+    fill.classList.add('sheet__tool_selected');
+  } else if (e.code === 'KeyP') {
+    instrument = 2;
+    toolButtons.forEach((el) => el.classList.remove('sheet__tool_selected'));
+    pencil.classList.add('sheet__tool_selected');
+  } else if (e.code === 'KeyC') {
+    instrument = 1;
+    toolButtons.forEach((el) => el.classList.remove('sheet__tool_selected'));
+    pick.classList.add('sheet__tool_selected');
+  }
+})
+
+colorSwitcher.addEventListener('change', () => {
+  prevColor.value = lastColor;
+  lastColor = colorSwitcher.value;
 })
