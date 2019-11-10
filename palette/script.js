@@ -1,5 +1,6 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
+const colorSwitcher = document.querySelector('.color__icon_current');
 
 function buildCanvas(size, color = '#D3D3D3') {
   let map = [];
@@ -38,9 +39,10 @@ function drawHex(imageArr, pixelSize) {
 let instrument = null;
 let isDrawing = false;
 let pixelSize = 512 / 4;
-let color = '#000000';
+let color = colorSwitcher.value;
 
 document.addEventListener('click', (e) => {
+  color = colorSwitcher.value;
   if (e.path.includes(pencil)) {
     instrument = 2;
   } else if (e.path.includes(fill)) {
@@ -63,5 +65,12 @@ canvas.addEventListener('click', (e) => {
   if (instrument === 0) {
     map = buildCanvas(4, color);
     drawHex(map, 512 / map.length);
+  }
+
+  // implement color picker
+  if (instrument === 1) {
+    let x = Math.floor(e.offsetX / pixelSize);
+    let y = Math.floor(e.offsetY / pixelSize);
+    colorSwitcher.value = map[x][y];
   }
 })
