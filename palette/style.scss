@@ -75,6 +75,10 @@
       opacity: 0.2;
       cursor: default;
     }
+
+    &_selected {
+      background-color: lightgrey;
+    }
   }
 }
 

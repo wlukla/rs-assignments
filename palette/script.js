@@ -45,22 +45,20 @@ document.addEventListener('click', (e) => {
   color = colorSwitcher.value;
   if (e.path.includes(pencil)) {
     instrument = 2;
+    toolButtons.forEach((el) => el.classList.remove('sheet__tool_selected'));
+    pencil.classList.add('sheet__tool_selected');
   } else if (e.path.includes(fill)) {
     instrument = 0;
+    toolButtons.forEach((el) => el.classList.remove('sheet__tool_selected'));
+    fill.classList.add('sheet__tool_selected');
   } else if (e.path.includes(pick)) {
     instrument = 1;
+    toolButtons.forEach((el) => el.classList.remove('sheet__tool_selected'));
+    pick.classList.add('sheet__tool_selected');
   }
 })
 
 canvas.addEventListener('click', (e) => {
-  // implement pencil
-  if (instrument === 2) {
-    let x = Math.floor(e.offsetX / pixelSize);
-    let y = Math.floor(e.offsetY / pixelSize);
-    map[x][y] = color;
-    drawHex(map, 512 / map.length);
-  }
-
   // imlement fill
   if (instrument === 0) {
     map = buildCanvas(4, color);
@@ -73,4 +71,31 @@ canvas.addEventListener('click', (e) => {
     let y = Math.floor(e.offsetY / pixelSize);
     colorSwitcher.value = map[x][y];
   }
+})
+
+canvas.addEventListener('mousedown', (e) => {
+  isDrawing = true;
+  if (instrument === 2) {
+    let x = Math.floor(e.offsetX / pixelSize);
+    let y = Math.floor(e.offsetY / pixelSize);
+    map[x][y] = color;
+    drawHex(map, 512 / map.length);
+  }
+})
+
+canvas.addEventListener('mouseout', () => {
+  isDrawing = false;
+})
+
+canvas.addEventListener('mousemove', (e) => {
+  if (instrument === 2 && isDrawing) {
+    let x = Math.floor(e.offsetX / pixelSize);
+    let y = Math.floor(e.offsetY / pixelSize);
+    map[x][y] = color;
+    drawHex(map, 512 / map.length);
+  }
+})
+
+canvas.addEventListener('mouseup', () => {
+  isDrawing = false;
 })
