@@ -69,6 +69,13 @@
       background-color: lightgrey;
     }
   }
+
+  &__tool {
+    &_disabled {
+      opacity: 0.2;
+      cursor: default;
+    }
+  }
 }
 
 .color,

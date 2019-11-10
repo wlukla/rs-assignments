@@ -93,6 +93,11 @@
   background-color: lightgrey;
 }
 
+.sheet__tool_disabled {
+  opacity: 0.2;
+  cursor: default;
+}
+
 .color,
 .tool,
 .size-switcher {
