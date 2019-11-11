@@ -94,6 +94,10 @@ document.addEventListener('click', (e) => {
     prevColor.value = colorSwitcher.value;
     colorSwitcher.value = blue.value;
   }
+
+  if (e.target === prevColor) {
+    [prevColor.value, colorSwitcher.value] = [colorSwitcher.value, prevColor.value];
+  }
 });
 
 canvas.addEventListener('mousedown', (e) => {
@@ -143,17 +147,3 @@ colorSwitcher.addEventListener('change', () => {
   prevColor.value = lastColor;
   lastColor = colorSwitcher.value;
 });
-
-// function defineArea(map, color) {
-//   let area = [];
-//   for (let i = 0; i < map.length; i++) {
-//     for (let j = 0; j < map[i].length; j++) {
-//       if (map[i][j] == color) {
-//         area.push([i, j]);
-//       }
-//     }
-//   }
-//   console.log(area);
-// }
-
-// defineArea(map, '#f74141');
