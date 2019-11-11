@@ -1,24 +1,26 @@
 {
   "name": "palette",
   "version": "1.0.0",
-  "description": "",
   "main": ".eslintrc.js",
   "dependencies": {
     "babel-eslint": "^10.0.3",
     "eslint-config-airbnb": "^18.0.1",
+    "eslint-plugin-flowtype": "^4.3.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^7.16.0",
     "lodash": "^4.17.15"
   },
   "devDependencies": {
-    "eslint": "^6.6.0",
+    "eslint": "^6.1.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint ./script.js"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "description": ""
 }
