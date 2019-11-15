@@ -6,6 +6,14 @@ const red = document.querySelector('.color__icon_red');
 const blue = document.querySelector('.color__icon_blue');
 let lastColor = colorSwitcher.value;
 
+let ctxScale = 1;
+
+function scale(i) {
+  ctxScale *= i;
+  ctx.scale(i, i);
+}
+
+scale(4);
 
 function buildCanvas(size, color = '#D3D3D3') {
   const map = [];
@@ -146,4 +154,41 @@ document.addEventListener('keydown', (e) => {
 colorSwitcher.addEventListener('change', () => {
   prevColor.value = lastColor;
   lastColor = colorSwitcher.value;
+});
+
+// getting image
+let key = '234ecb2a20225f9a826c1c7d1f299dad56d2b0c182718bfbcbe53102ab3b481b';
+let data = getLinkToImage();
+function getLinkToImage() {
+  const url = 'https://api.unsplash.com/photos/random?query=town,Minsk&client_id=' + key;
+  fetch(url)
+    .then(res => res.json())
+    .then(d => data = d.urls.small)
+}
+
+let loadButton = document.querySelector('.form__load');
+loadButton.addEventListener('click', () => {
+  let img = new Image();
+  getLinkToImage();
+
+  img.onload = function() {
+    if (img.width > 128) {
+      img.height = img.height / img.width * 128;
+      img.width = 128;
+      let startY = (128 - img.height) / 2;
+      ctx.drawImage(img, 0, startY, img.width, img.height);
+    } else if (img.height > 128) {
+      img.width = img.widht / img.height * 128;
+      img.height = 128;
+      let startX = (128 - img.width) / 2;
+      ctx.drawImage(img, startX, 0, img.width, img.height);
+    } else if (img.width < 128 && img.height < 128) {
+      let startX = (128 - img.width) / 2;
+      let startY = (128 - img.height) / 2;
+      ctx.drawImage(img, startX, startY, img.width, img.height);
+    }
+    // add if both bigger and not square
+    // add if square
+  }
+  img.src = data;
 });
