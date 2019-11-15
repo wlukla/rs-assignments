@@ -19,9 +19,23 @@ let ctxScale = 1;
 function scale(i) {
   ctxScale *= i;
   ctx.scale(i, i);
+  window.localStorage.setItem('scale', ctxScale);
 }
 
-scale(4);
+if (localStorage.getItem('data') !== null) {
+  var img = new Image;
+  img.src = localStorage.getItem('data');
+  img.onload = function () {
+    ctx.drawImage(img, 0, 0);
+    scale(localStorage.getItem('scale'));
+  }
+};
+
+
+
+function saveCtx() {
+  window.localStorage.setItem('data', canvas.toDataURL());
+}
 
 document.addEventListener('click', (e) => {
   if (e.path.includes(pencil)) {
@@ -47,7 +61,7 @@ function addPixel(e) {
 }
 
 canvas.addEventListener('click', (e) => {
-  // imlement fill
+  // imlement pencil
   if (instrument === 2) {
     addPixel(e);
   }
@@ -59,6 +73,7 @@ canvas.addEventListener('click', (e) => {
     prevColor.value = lastColor;
     lastColor = colorSwitcher.value;
   }
+  saveCtx();
 });
 
 document.addEventListener('click', (e) => {
@@ -90,13 +105,13 @@ canvas.addEventListener('mouseout', () => {
   if (instrument === 2) {
     isDrawing = false;
   }
+  saveCtx();
 });
 
 canvas.addEventListener('mousemove', (e) => {
   if (instrument === 2 && isDrawing) {
     addPixel(e);
   }
-
 });
 
 canvas.addEventListener('mouseup', () => {
@@ -128,7 +143,7 @@ colorSwitcher.addEventListener('change', () => {
 
 // getting image
 let key = '234ecb2a20225f9a826c1c7d1f299dad56d2b0c182718bfbcbe53102ab3b481b';
-let data = getLinkToImage();
+let data = 'https://images.unsplash.com/photo-1569965844464-3d8719e67dee?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjEwMTU2NH0';
 function getLinkToImage() {
   const url = 'https://api.unsplash.com/photos/random?query=town,Minsk&client_id=' + key;
   fetch(url)
@@ -138,8 +153,8 @@ function getLinkToImage() {
 
 let loadButton = document.querySelector('.form__load');
 loadButton.addEventListener('click', () => {
-  let img = new Image();
-  getLinkToImage();
+  let img = new Image;
+  // getLinkToImage();
 
   img.onload = function() {
     if (img.width > 128) {
@@ -160,6 +175,7 @@ loadButton.addEventListener('click', () => {
     // add if both bigger and not square
     // add if square
   }
+  img.crossOrigin = 'anonymous';
   img.src = data;
 });
 
