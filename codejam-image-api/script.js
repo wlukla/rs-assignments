@@ -6,6 +6,14 @@ const red = document.querySelector('.color__icon_red');
 const blue = document.querySelector('.color__icon_blue');
 let lastColor = colorSwitcher.value;
 
+const toolButtons = document.querySelectorAll('.sheet__tool');
+const fill = toolButtons[0];
+const pick = toolButtons[1];
+const pencil = toolButtons[2];
+let instrument = null;
+let isDrawing = false;
+
+const pixelSize = 512 / 4;
 let ctxScale = 1;
 
 function scale(i) {
@@ -14,46 +22,6 @@ function scale(i) {
 }
 
 scale(4);
-
-function buildCanvas(size, color = '#D3D3D3') {
-  const map = [];
-  for (let i = 0; i < size; i += 1) {
-    map.push([]);
-    for (let j = 0; j < size; j += 1) {
-      map[i][j] = color;
-    }
-  }
-  return map;
-}
-
-let map = [];
-map = buildCanvas(4);
-if (window.localStorage.getItem('map') === null) {
-  map = buildCanvas(4);
-} else {
-  map = window.localStorage.getItem('map').split(',');
-  map = _.chunk(map, 4);
-}
-
-function drawHex(imageArr, pixelSize) {
-  for (let i = 0; i < imageArr.length; i += 1) {
-    for (let j = 0; j < imageArr[i].length; j += 1) {
-      ctx.fillStyle = imageArr[i][j];
-      ctx.fillRect(i * pixelSize, j * pixelSize, pixelSize, pixelSize);
-    }
-  }
-}
-
-drawHex(map, 512 / map.length);
-
-const toolButtons = document.querySelectorAll('.sheet__tool');
-const fill = toolButtons[0];
-const pick = toolButtons[1];
-const pencil = toolButtons[2];
-
-let instrument = null;
-let isDrawing = false;
-const pixelSize = 512 / 4;
 
 document.addEventListener('click', (e) => {
   if (e.path.includes(pencil)) {
@@ -71,23 +39,26 @@ document.addEventListener('click', (e) => {
   }
 });
 
+function addPixel(e) {
+  const startX = Math.floor(e.offsetX / ctxScale);
+  const startY = Math.floor(e.offsetY / ctxScale);
+  ctx.fillStyle = colorSwitcher.value;
+  ctx.fillRect(startX, startY, 1, 1);
+}
+
 canvas.addEventListener('click', (e) => {
   // imlement fill
-  if (instrument === 0) {
-    map = buildCanvas(4, colorSwitcher.value);
-    drawHex(map, 512 / map.length);
+  if (instrument === 2) {
+    addPixel(e);
   }
 
   // implement color picker
   if (instrument === 1) {
     const x = Math.floor(e.offsetX / pixelSize);
     const y = Math.floor(e.offsetY / pixelSize);
-    colorSwitcher.value = map[x][y];
     prevColor.value = lastColor;
     lastColor = colorSwitcher.value;
   }
-
-  window.localStorage.setItem('map', map);
 });
 
 document.addEventListener('click', (e) => {
@@ -109,30 +80,29 @@ document.addEventListener('click', (e) => {
 });
 
 canvas.addEventListener('mousedown', (e) => {
-  isDrawing = true;
   if (instrument === 2) {
-    const x = Math.floor(e.offsetX / pixelSize);
-    const y = Math.floor(e.offsetY / pixelSize);
-    map[x][y] = colorSwitcher.value;
-    drawHex(map, 512 / map.length);
+    isDrawing = true;
+    addPixel(e);
   }
 });
 
 canvas.addEventListener('mouseout', () => {
-  isDrawing = false;
+  if (instrument === 2) {
+    isDrawing = false;
+  }
 });
 
 canvas.addEventListener('mousemove', (e) => {
   if (instrument === 2 && isDrawing) {
-    const x = Math.floor(e.offsetX / pixelSize);
-    const y = Math.floor(e.offsetY / pixelSize);
-    map[x][y] = colorSwitcher.value;
-    drawHex(map, 512 / map.length);
+    addPixel(e);
   }
+
 });
 
 canvas.addEventListener('mouseup', () => {
-  isDrawing = false;
+  if (instrument === 2) {
+    isDrawing = false;
+  }
 });
 
 document.addEventListener('keydown', (e) => {
@@ -192,3 +162,8 @@ loadButton.addEventListener('click', () => {
   }
   img.src = data;
 });
+
+
+// pencil
+// storing
+// image pixeling
