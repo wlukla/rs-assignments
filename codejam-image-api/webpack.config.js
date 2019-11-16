@@ -18,6 +18,13 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.html$/,
+        use: {
+          loader: 'html-loader',
+          options: { minimize: false },
+        }
+      },
+      {
         test:/\.(s*)css$/,
         use:['style-loader','css-loader', 'sass-loader']
       },
@@ -39,4 +46,11 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+      filename: './index.html'
+    })
+  ]
+
 };

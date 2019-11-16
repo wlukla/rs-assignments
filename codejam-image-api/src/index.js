@@ -26,15 +26,15 @@ function scale(i) {
 }
 
 if (localStorage.getItem('data') !== null) {
-  var img = new Image;
-  img.src = localStorage.getItem('data');
-  img.onload = function () {
-    ctx.drawImage(img, 0, 0);
+  let oldImg = new Image;
+  oldImg.src = localStorage.getItem('data');
+  oldImg.onload = function () {
+    ctx.drawImage(oldImg, 0, 0);
     scale(localStorage.getItem('scale'));
   }
+} else {
+  scale(4);
 };
-
-
 
 function saveCtx() {
   window.localStorage.setItem('data', canvas.toDataURL());
@@ -147,6 +147,7 @@ colorSwitcher.addEventListener('change', () => {
 // getting image
 let key = '234ecb2a20225f9a826c1c7d1f299dad56d2b0c182718bfbcbe53102ab3b481b';
 let data = 'https://images.unsplash.com/photo-1569965844464-3d8719e67dee?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjEwMTU2NH0';
+
 function getLinkToImage() {
   const city = input.value;
   const url = 'https://api.unsplash.com/photos/random?=&client_id=' + key;
@@ -175,14 +176,12 @@ loadButton.addEventListener('click', () => {
       img.width = img.widht / img.height * 128;
       img.height = 128;
       let startX = (128 - img.width) / 2;
-      ctx.drawImage(img, startX, 0, img.width, img.height);
+      ctx.drawImage(img, startX, 0, img.width, ctxScale);
     } else if (img.width < 128 && img.height < 128) {
       let startX = (128 - img.width) / 2;
       let startY = (128 - img.height) / 2;
       ctx.drawImage(img, startX, startY, img.width, img.height);
     }
-    // add if both bigger and not square
-    // add if square
     saveCtx();
   }
   img.crossOrigin = 'anonymous';
