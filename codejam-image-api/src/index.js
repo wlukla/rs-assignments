@@ -150,19 +150,27 @@ let data = 'https://images.unsplash.com/photo-1569965844464-3d8719e67dee?ixlib=r
 function getLinkToImage() {
   const city = input.value;
   let url = ['https://api.unsplash.com/photos/random?=&client_id=', key].join('');
+
   if (city !== '') {
     url = ['https://api.unsplash.com/photos/random?query=town,', city, '&client_id=', key].join('');
   }
 
-  fetch(url)
-    .then((res) => res.json())
-    .then((d) => { data = d.urls.small; });
+  async function getLink(req) {
+    let response = await fetch(req);
+    let data = await response.json();
+    let link = await data.urls.small;
+    return link;
+  }
+
+  let link = getLink(url)
+
+  return link;
 }
 
 const loadButton = document.querySelector('.form__load');
-loadButton.addEventListener('click', () => {
+loadButton.addEventListener('click', async () => {
   const img = new Image();
-  // getLinkToImage();
+  let link = await getLinkToImage();
 
   img.onload = () => {
     if (img.width > 128) {
@@ -183,7 +191,7 @@ loadButton.addEventListener('click', () => {
     saveCtx();
   };
   img.crossOrigin = 'anonymous';
-  img.src = data;
+  img.src = link;
 });
 
 // greyscale
