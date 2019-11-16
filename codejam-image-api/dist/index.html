@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <!-- <link rel="stylesheet" href="../style.css"> -->
+  <title>CodeJam - Pallete</title>
+</head>
+<body>
+  <header class="header">
+    <nav class="nav">
+      <img class="nav__icon" src="assets/img/nav-icon.svg" alt="menu">
+    </nav>
+    <h1 class="header__heading">CodeJam - Pallete</h1>
+    <div class="menu">
+      <img class="menu__icon" src="assets/img/menu-icon.svg" alt="options">
+    </div>
+  </header>
+  <main class="main">
+    <section class="sheets-container">
+        <div class="sheet">
+          <ul class="sheet__list">
+            <li class="tool sheet__tool">
+              <img src="assets/img/paint-bucket.svg" alt="" class="tool__icon">
+              <span class="tool__name">Fill bucket</span>
+            </li>
+            <li class="tool sheet__tool">
+              <img src="assets/img/eye-dropper.svg" alt="" class="tool__icon">
+              <span class="tool__name">Choose color</span>
+            </li>
+            <li class="tool sheet__tool">
+              <img src="assets/img/pen-icon.svg" alt="" class="tool__icon">
+              <span class="tool__name">Pencil</span>
+            </li>
+            <li class="tool sheet__tool sheet__tool_disabled">
+              <img src="assets/img/exchange-alt.svg" alt="" class="tool__icon">
+              <span class="tool__name">Transform</span>
+            </li>
+          </ul>
+        </div>
+        <div class="sheet">
+          <ul class="sheet__list">
+            <li class="color sheet__color">
+              <input class="color__icon color__icon_current" id="color-current" type="color" value="#C4C4C4">
+              <label class="color__text">Current color</label>
+            </li>
+            <li class="color sheet__color">
+              <input class="color__icon color__icon_prev" id="color-prev" type="color" value="#41F795" disabled>
+              <label class="color__text">Prev color</label>
+            </li>
+            <div class="divider"></div>
+            <li class="color sheet__color">
+              <input class="color__icon color__icon_red" id="color-red" type="color" value="#F74141" disabled>
+              <label class="color__text">red</label>
+            </li>
+            <li class="color sheet__color">
+              <input class="color__icon color__icon_blue" id="color-blue" type="color" value="#41B6F7" disabled>
+              <label class="color__text">blue</label>
+            </li>
+          </ul>
+        </div>
+      </section>
+    <section class="canvas-container">
+      <form class="form" action="">
+        <input class="form__load" type="button" value="Load">
+        <input class="form__text-input" type="text">
+        <input class="form__bw" type="button" value="B&W">
+      </form>
+      <canvas class="canvas" id="canvas" width="512" height="512"></canvas>
+    </section>
+    <section class="size-switchers-container">
+      <div class="sheet">
+        <ul class="sheet__list">
+          <li class="size-switcher sheet__size-switcher" id="size4">
+            <img src="assets/img/paint-bucket.svg" alt="paint bucket tool icon" class="size-switcher__icon">
+            <span class="size-switcher__name">4x4</span>
+          </li>
+          <li class="size-switcher sheet__size-switcher" id="size32">
+            <img src="assets/img/eye-dropper.svg" alt="choose color tool icon" class="size-switcher__icon">
+            <span class="size-switcher__name">32x32</span>
+          </li>
+          <li class="size-switcher sheet__size-switcher" id="size256">
+            <img src="assets/img/arrows-alt.svg" alt="move tool icon" class="size-switcher__icon">
+            <span class="size-switcher__name">256x256</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </main>
+  <script src="index.js"></script>
+</body>
+</html>
