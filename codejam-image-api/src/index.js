@@ -14,9 +14,8 @@ const pick = toolButtons[1];
 const pencil = toolButtons[2];
 let instrument = null;
 let isDrawing = false;
-let input = document.querySelector('.form__text-input');
+const input = document.querySelector('.form__text-input');
 
-const pixelSize = 512 / 4;
 let ctxScale = 1;
 
 function scale(i) {
@@ -26,15 +25,15 @@ function scale(i) {
 }
 
 if (localStorage.getItem('data') !== null) {
-  let oldImg = new Image;
+  const oldImg = new Image();
   oldImg.src = localStorage.getItem('data');
-  oldImg.onload = function () {
+  oldImg.onload = () => {
     ctx.drawImage(oldImg, 0, 0);
     scale(localStorage.getItem('scale'));
-  }
+  };
 } else {
   scale(4);
-};
+}
 
 function saveCtx() {
   window.localStorage.setItem('data', canvas.toDataURL());
@@ -71,8 +70,8 @@ canvas.addEventListener('click', (e) => {
 
   // implement color picker
   if (instrument === 1) {
-    const x = Math.floor(e.offsetX / pixelSize);
-    const y = Math.floor(e.offsetY / pixelSize);
+    // const x = Math.floor(e.offsetX / pixelSize);
+    // const y = Math.floor(e.offsetY / pixelSize);
     prevColor.value = lastColor;
     lastColor = colorSwitcher.value;
   }
@@ -145,45 +144,45 @@ colorSwitcher.addEventListener('change', () => {
 });
 
 // getting image
-let key = '234ecb2a20225f9a826c1c7d1f299dad56d2b0c182718bfbcbe53102ab3b481b';
+const key = '234ecb2a20225f9a826c1c7d1f299dad56d2b0c182718bfbcbe53102ab3b481b';
 let data = 'https://images.unsplash.com/photo-1569965844464-3d8719e67dee?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjEwMTU2NH0';
 
 function getLinkToImage() {
   const city = input.value;
-  const url = 'https://api.unsplash.com/photos/random?=&client_id=' + key;
+  let url = ['https://api.unsplash.com/photos/random?=&client_id=', key].join('');
   if (city !== '') {
-    const url = 'https://api.unsplash.com/photos/random?query=town,' + city + '&client_id=' + key;
+    url = ['https://api.unsplash.com/photos/random?query=town,', city, '&client_id=', key].join;
   }
 
 
   fetch(url)
-    .then(res => res.json())
-    .then(d => data = d.urls.small)
+    .then((res) => res.json())
+    .then((d) => { data = d.urls.small; });
 }
 
-let loadButton = document.querySelector('.form__load');
+const loadButton = document.querySelector('.form__load');
 loadButton.addEventListener('click', () => {
-  let img = new Image;
-  // getLinkToImage();
+  const img = new Image();
+  getLinkToImage();
 
-  img.onload = function() {
+  img.onload = () => {
     if (img.width > 128) {
-      img.height = img.height / img.width * 128;
+      img.height = (img.height / img.width) * 128;
       img.width = 128;
-      let startY = (128 - img.height) / 2;
+      const startY = (128 - img.height) / 2;
       ctx.drawImage(img, 0, startY, img.width, img.height);
     } else if (img.height > 128) {
-      img.width = img.widht / img.height * 128;
+      img.width = (img.widht / img.height) * 128;
       img.height = 128;
-      let startX = (128 - img.width) / 2;
+      const startX = (128 - img.width) / 2;
       ctx.drawImage(img, startX, 0, img.width, ctxScale);
     } else if (img.width < 128 && img.height < 128) {
-      let startX = (128 - img.width) / 2;
-      let startY = (128 - img.height) / 2;
+      const startX = (128 - img.width) / 2;
+      const startY = (128 - img.height) / 2;
       ctx.drawImage(img, startX, startY, img.width, img.height);
     }
     saveCtx();
-  }
+  };
   img.crossOrigin = 'anonymous';
   img.src = data;
 });
