@@ -151,9 +151,8 @@ function getLinkToImage() {
   const city = input.value;
   let url = ['https://api.unsplash.com/photos/random?=&client_id=', key].join('');
   if (city !== '') {
-    url = ['https://api.unsplash.com/photos/random?query=town,', city, '&client_id=', key].join;
+    url = ['https://api.unsplash.com/photos/random?query=town,', city, '&client_id=', key].join('');
   }
-
 
   fetch(url)
     .then((res) => res.json())
@@ -163,7 +162,7 @@ function getLinkToImage() {
 const loadButton = document.querySelector('.form__load');
 loadButton.addEventListener('click', () => {
   const img = new Image();
-  getLinkToImage();
+  // getLinkToImage();
 
   img.onload = () => {
     if (img.width > 128) {
@@ -185,4 +184,27 @@ loadButton.addEventListener('click', () => {
   };
   img.crossOrigin = 'anonymous';
   img.src = data;
+});
+
+// greyscale
+function grey() {
+  const [width, height] = [canvas.width, canvas.height];
+  const imgPixels = ctx.getImageData(0, 0, width, height);
+
+  for (let y = 0; y < height; y += 1) {
+    for (let x = 0; x < width; x += 1) {
+      const i = (y * 4) * width + x * 4;
+      const avg = (imgPixels.data[i] + imgPixels.data[i + 1] + imgPixels.data[i + 2]) / 3;
+      imgPixels.data[i] = avg;
+      imgPixels.data[i + 1] = avg;
+      imgPixels.data[i + 2] = avg;
+    }
+  }
+
+  ctx.putImageData(imgPixels, 0, 0, 0, 0, imgPixels.width, imgPixels.height);
+}
+
+const BWButton = document.querySelector('.form__bw');
+BWButton.addEventListener('click', () => {
+  grey();
 });
