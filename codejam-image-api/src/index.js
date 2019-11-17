@@ -2,6 +2,9 @@ import './style.scss';
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
+ctx.msImageSmoothingEnabled = false;
+ctx.mozImageSmoothingEnabled = false;
+ctx.webkitImageSmoothingEnabled = false;
 ctx.imageSmoothingEnabled = false;
 const colorSwitcher = document.querySelector('.color__icon_current');
 const prevColor = document.querySelector('.color__icon_prev');
@@ -20,25 +23,22 @@ const input = document.querySelector('.form__text-input');
 let ctxScale = 1;
 
 function scale(i) {
-  let lastScale = window.localStorage.getItem('scale');
-  lastScale = +lastScale ? +lastScale : 1;
-
-  ctx.scale(1 / lastScale, 1 / lastScale)
   ctxScale = i;
-  ctx.scale(i, i);
-
   window.localStorage.setItem('scale', ctxScale);
 }
 
 window.onload = function () {
+  instrument = 2;
+  toolButtons.forEach((el) => el.classList.remove('sheet__tool_selected'));
+  pencil.classList.add('sheet__tool_selected');
+
   if (localStorage.getItem('data') !== null) {
+    data = window.localStorage.getItem('lastImg');
     const oldImg = new Image();
     oldImg.src = localStorage.getItem('data');
     oldImg.onload = async () => {
       ctxScale = +localStorage.getItem('scale');
       ctx.drawImage(oldImg, 0, 0);
-      ctx.scale(+localStorage.getItem('scale'), +localStorage.getItem('scale'));
-      console.log(ctxScale);
       if (ctxScale === 1) {
         makeActive(size512Button);
       } else if (ctxScale === 2) {
@@ -73,10 +73,10 @@ document.addEventListener('click', (e) => {
 });
 
 function addPixel(e) {
-  const startX = Math.floor(e.offsetX / ctxScale);
-  const startY = Math.floor(e.offsetY / ctxScale);
+  const startX = Math.floor(e.offsetX / ctxScale) * ctxScale;
+  const startY = Math.floor(e.offsetY / ctxScale) * ctxScale;
   ctx.fillStyle = colorSwitcher.value;
-  ctx.fillRect(startX, startY, 1, 1);
+  ctx.fillRect(startX, startY, ctxScale, ctxScale);
 }
 
 canvas.addEventListener('click', (e) => {
@@ -84,7 +84,6 @@ canvas.addEventListener('click', (e) => {
   if (instrument === 2) {
     addPixel(e);
   }
-
   saveCtx();
 });
 
@@ -177,37 +176,51 @@ function getLinkToImage() {
   return link;
 }
 
-function addImage(img) {
+async function addImage(img) {
   let pixelSize = ctxScale;
-  let canvasSize = canvas.width / ctxScale;
   let startX = 0;
   let startY = 0;
-  console.log(img.width, img.height)
+  let canvasSize = 512;
+
   if (img.width > img.height) {
-    img.height = (img.height / img.width) * canvasSize / pixelSize;
-    img.width = canvasSize / pixelSize;
-    startY = (canvasSize - img.height * ctxScale) / 2;
+    img.height = (img.height / img.width) * canvasSize;
+    img.width = canvasSize;
+    startY = (canvasSize - img.height) / 2;
   } else if (img.height > img.width) {
-    img.width = (img.width / img.height) * canvasSize / pixelSize;
-    img.height = canvasSize / pixelSize;
-    startX = (canvasSize - img.width * ctxScale) / 2;
+    img.width = (img.width / img.height) * canvasSize;
+    img.height = canvasSize;
+    startX = (canvasSize - img.width) / 2;
   } else {
     img.width = canvasSize / pixelSize;
     img.height = canvasSize / pixelSize;
   }
 
-  console.log( img.width, img.height)
+  let w = img.width / pixelSize;
+  let h = img.height / pixelSize;
+
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.drawImage(img, startX, startY, img.width * pixelSize , img.height * pixelSize);
+  ctx.drawImage(img, startX, startY, w, h)
+  let smallImg = new Image();
+  smallImg.src = canvas.toDataURL();
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  smallImg.onload = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(smallImg, startX, startY, w, h,
+                            startX, startY, img.width, img.height);
+    saveCtx();
+  }
+
 }
 
 const loadButton = document.querySelector('.form__load');
 loadButton.addEventListener('click', async () => {
   const img = new Image();
-  // let link = await getLinkToImage();
+  data = await getLinkToImage();
+  window.localStorage.setItem('lastImg', data);
 
   img.onload = () => {
     addImage(img);
+    saveCtx();
   };
 
   img.crossOrigin = 'anonymous';
@@ -245,19 +258,22 @@ function makeActive(btn) {
 const sizeButtons = document.querySelectorAll('.size-switcher');
 const [size128Button, size256Button, size512Button] = sizeButtons;
 
-size128Button.addEventListener('click', function() {
-  makeActive(this);
-  scale(4);
+size128Button.addEventListener('click', async function() {
+  function changeRes(t) {
+    makeActive(t);
+    scale(4);
 
-  const img = new Image();
-  // let link = await getLinkToImage();
+    const img = new Image();
 
-  img.onload = () => {
-    addImage(img);
-  };
+    img.onload = () => {
+      addImage(img);
+    };
 
-  img.crossOrigin = 'anonymous';
-  img.src = data;
+    img.crossOrigin = 'anonymous';
+    img.src = data;
+  }
+  await changeRes(this);
+  saveCtx();
 });
 
 size256Button.addEventListener('click', function() {
@@ -265,24 +281,23 @@ size256Button.addEventListener('click', function() {
   scale(2);
 
   const img = new Image();
-  // let link = await getLinkToImage();
 
-  img.onload = () => {
-    addImage(img);
+  img.onload = async () => {
+    await addImage(img);
+    saveCtx();
   };
 
   img.crossOrigin = 'anonymous';
   img.src = data;
 });
 
-size512Button.addEventListener('click', async function() {
+size512Button.addEventListener('click', function() {
   makeActive(this);
   scale(1);
 
   const img = new Image();
-  // let link = await getLinkToImage();
 
-  img.onload = () => {
+  img.onload = async () => {
     addImage(img);
   };
 
