@@ -30,16 +30,26 @@ function scale(i) {
   window.localStorage.setItem('scale', ctxScale);
 }
 
-if (localStorage.getItem('data') !== null) {
-  const oldImg = new Image();
-  oldImg.src = localStorage.getItem('data');
-  oldImg.onload = () => {
-    ctxScale = +localStorage.getItem('scale');
-    ctx.drawImage(oldImg, 0, 0);
-    ctx.scale(+localStorage.getItem('scale'), +localStorage.getItem('scale'));
-  };
-} else {
-  scale(4);
+window.onload = function () {
+  if (localStorage.getItem('data') !== null) {
+    const oldImg = new Image();
+    oldImg.src = localStorage.getItem('data');
+    oldImg.onload = async () => {
+      ctxScale = +localStorage.getItem('scale');
+      ctx.drawImage(oldImg, 0, 0);
+      ctx.scale(+localStorage.getItem('scale'), +localStorage.getItem('scale'));
+      console.log(ctxScale);
+      if (ctxScale === 1) {
+        makeActive(size512Button);
+      } else if (ctxScale === 2) {
+        makeActive(size256Button);
+      } else if (ctxScale === 4) {
+        makeActive(size128Button);
+      }
+    };
+  } else {
+    scale(4);
+  }
 }
 
 function saveCtx() {
@@ -227,13 +237,13 @@ BWButton.addEventListener('click', () => {
   grey();
 });
 
-const sizeButtons = document.querySelectorAll('.size-switcher');
-const [size128Button, size256Button, size512Button] = sizeButtons;
-
 function makeActive(btn) {
   sizeButtons.forEach(button => button.classList.remove('sheet__size-switcher_active'));
   btn.classList.add('sheet__size-switcher_active');
 }
+
+const sizeButtons = document.querySelectorAll('.size-switcher');
+const [size128Button, size256Button, size512Button] = sizeButtons;
 
 size128Button.addEventListener('click', function() {
   makeActive(this);
