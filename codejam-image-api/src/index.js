@@ -34,6 +34,8 @@ window.onload = function () {
 
   if (localStorage.getItem('data') !== null) {
     data = window.localStorage.getItem('lastImg');
+    colorSwitcher.value = window.localStorage.getItem('color');
+    console.log(window.localStorage.getItem('color'));
     const oldImg = new Image();
     oldImg.src = localStorage.getItem('data');
     oldImg.onload = async () => {
@@ -54,6 +56,7 @@ window.onload = function () {
 
 function saveCtx() {
   window.localStorage.setItem('data', canvas.toDataURL());
+  window.localStorage.setItem('color', colorSwitcher.value);
 }
 
 document.addEventListener('click', (e) => {
@@ -150,6 +153,7 @@ document.addEventListener('keydown', (e) => {
 colorSwitcher.addEventListener('change', () => {
   prevColor.value = lastColor;
   lastColor = colorSwitcher.value;
+  window.localStorage.setItem('color', lastColor);
 });
 
 // getting image
@@ -208,6 +212,7 @@ async function addImage(img) {
     ctx.drawImage(smallImg, startX, startY, w, h,
                             startX, startY, img.width, img.height);
     saveCtx();
+    isImage = true;
   }
 
 }
@@ -245,9 +250,14 @@ function grey() {
   ctx.putImageData(imgPixels, 0, 0, 0, 0, imgPixels.width, imgPixels.height);
 }
 
+let isImage = false;
 const BWButton = document.querySelector('.form__bw');
 BWButton.addEventListener('click', () => {
-  grey();
+  if (isImage) {
+    grey();
+  } else {
+    alert('Load image first');
+  }
 });
 
 function makeActive(btn) {
