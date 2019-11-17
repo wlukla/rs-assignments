@@ -1,4 +1,5 @@
 import './style.scss';
+import * as Netlify from './netlify';
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
@@ -20,6 +21,9 @@ let instrument = null;
 let isDrawing = false;
 const input = document.querySelector('.form__text-input');
 
+const sizeButtons = document.querySelectorAll('.size-switcher');
+const [size128Button, size256Button, size512Button] = sizeButtons;
+
 let ctxScale = 1;
 
 function scale(i) {
@@ -27,7 +31,14 @@ function scale(i) {
   window.localStorage.setItem('scale', ctxScale);
 }
 
-window.onload = function () {
+let data = 'https://images.unsplash.com/photo-1569965844464-3d8719e67dee?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjEwMTU2NH0';
+
+function makeActive(btn) {
+  sizeButtons.forEach((button) => button.classList.remove('sheet__size-switcher_active'));
+  btn.classList.add('sheet__size-switcher_active');
+}
+
+window.onload = () => {
   instrument = 2;
   toolButtons.forEach((el) => el.classList.remove('sheet__tool_selected'));
   pencil.classList.add('sheet__tool_selected');
@@ -35,7 +46,6 @@ window.onload = function () {
   if (localStorage.getItem('data') !== null) {
     data = window.localStorage.getItem('lastImg');
     colorSwitcher.value = window.localStorage.getItem('color');
-    console.log(window.localStorage.getItem('color'));
     const oldImg = new Image();
     oldImg.src = localStorage.getItem('data');
     oldImg.onload = async () => {
@@ -52,7 +62,7 @@ window.onload = function () {
   } else {
     scale(4);
   }
-}
+};
 
 function saveCtx() {
   window.localStorage.setItem('data', canvas.toDataURL());
@@ -158,7 +168,6 @@ colorSwitcher.addEventListener('change', () => {
 
 // getting image
 const key = '234ecb2a20225f9a826c1c7d1f299dad56d2b0c182718bfbcbe53102ab3b481b';
-let data = 'https://images.unsplash.com/photo-1569965844464-3d8719e67dee?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjEwMTU2NH0';
 
 function getLinkToImage() {
   const city = input.value;
@@ -169,52 +178,54 @@ function getLinkToImage() {
   }
 
   async function getLink(req) {
-    let response = await fetch(req);
-    let data = await response.json();
-    let link = await data.urls.small;
+    const response = await fetch(req);
+    const json = await response.json();
+    const link = await json.urls.small;
     return link;
   }
 
-  let link = getLink(url)
+  const link = getLink(url);
 
   return link;
 }
 
-async function addImage(img) {
-  let pixelSize = ctxScale;
+let isImage = false;
+
+function addImage(img) {
+  const pixelSize = ctxScale;
   let startX = 0;
   let startY = 0;
-  let canvasSize = 512;
+  const canvasSize = 512;
+  let ws = 0;
+  let hs = 0;
 
   if (img.width > img.height) {
-    img.height = (img.height / img.width) * canvasSize;
-    img.width = canvasSize;
-    startY = (canvasSize - img.height) / 2;
+    hs = (img.height / img.width) * canvasSize;
+    ws = canvasSize;
+    startY = (canvasSize - hs) / 2;
   } else if (img.height > img.width) {
-    img.width = (img.width / img.height) * canvasSize;
-    img.height = canvasSize;
-    startX = (canvasSize - img.width) / 2;
+    ws = (img.width / img.height) * canvasSize;
+    hs = canvasSize;
+    startX = (canvasSize - ws) / 2;
   } else {
-    img.width = canvasSize / pixelSize;
-    img.height = canvasSize / pixelSize;
+    ws = canvasSize / pixelSize;
+    hs = canvasSize / pixelSize;
   }
 
-  let w = img.width / pixelSize;
-  let h = img.height / pixelSize;
+  const w = ws / pixelSize;
+  const h = hs / pixelSize;
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.drawImage(img, startX, startY, w, h)
-  let smallImg = new Image();
+  ctx.drawImage(img, startX, startY, w, h);
+  const smallImg = new Image();
   smallImg.src = canvas.toDataURL();
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   smallImg.onload = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(smallImg, startX, startY, w, h,
-                            startX, startY, img.width, img.height);
+    ctx.drawImage(smallImg, startX, startY, w, h, startX, startY, ws, hs);
     saveCtx();
     isImage = true;
-  }
-
+  };
 }
 
 const loadButton = document.querySelector('.form__load');
@@ -250,7 +261,7 @@ function grey() {
   ctx.putImageData(imgPixels, 0, 0, 0, 0, imgPixels.width, imgPixels.height);
 }
 
-let isImage = false;
+
 const BWButton = document.querySelector('.form__bw');
 BWButton.addEventListener('click', () => {
   if (isImage) {
@@ -260,15 +271,7 @@ BWButton.addEventListener('click', () => {
   }
 });
 
-function makeActive(btn) {
-  sizeButtons.forEach(button => button.classList.remove('sheet__size-switcher_active'));
-  btn.classList.add('sheet__size-switcher_active');
-}
-
-const sizeButtons = document.querySelectorAll('.size-switcher');
-const [size128Button, size256Button, size512Button] = sizeButtons;
-
-size128Button.addEventListener('click', async function() {
+size128Button.addEventListener('click', () => {
   function changeRes(t) {
     makeActive(t);
     scale(4);
@@ -282,18 +285,18 @@ size128Button.addEventListener('click', async function() {
     img.crossOrigin = 'anonymous';
     img.src = data;
   }
-  await changeRes(this);
+  changeRes(this);
   saveCtx();
 });
 
-size256Button.addEventListener('click', function() {
+size256Button.addEventListener('click', () => {
   makeActive(this);
   scale(2);
 
   const img = new Image();
 
-  img.onload = async () => {
-    await addImage(img);
+  img.onload = () => {
+    addImage(img);
     saveCtx();
   };
 
@@ -301,7 +304,7 @@ size256Button.addEventListener('click', function() {
   img.src = data;
 });
 
-size512Button.addEventListener('click', function() {
+size512Button.addEventListener('click', () => {
   makeActive(this);
   scale(1);
 
@@ -319,4 +322,18 @@ size512Button.addEventListener('click', function() {
 const form = document.querySelector('.form');
 form.addEventListener('submit', (e) => {
   e.preventDefault();
-})
+});
+
+// github authorization
+const loginBtn = document.querySelector('.menu__login');
+loginBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  const authenticator = new Netlify.Default({});
+  authenticator.authenticate({ provider: 'github', scope: 'user' }, (err, d) => {
+    if (err) {
+      console.log('Error Authenticating with GitHub: ', err);
+    } else {
+      console.log('Authenticated with GitHub. Access Token: ', d.token);
+    }
+  });
+});
