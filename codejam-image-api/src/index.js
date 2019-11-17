@@ -2,6 +2,7 @@ import './style.scss';
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
+ctx.imageSmoothingEnabled = false;
 const colorSwitcher = document.querySelector('.color__icon_current');
 const prevColor = document.querySelector('.color__icon_prev');
 const red = document.querySelector('.color__icon_red');
@@ -19,8 +20,13 @@ const input = document.querySelector('.form__text-input');
 let ctxScale = 1;
 
 function scale(i) {
-  ctxScale *= i;
+  let lastScale = window.localStorage.getItem('scale');
+  lastScale = +lastScale ? +lastScale : 1;
+
+  ctx.scale(1 / lastScale, 1 / lastScale)
+  ctxScale = i;
   ctx.scale(i, i);
+
   window.localStorage.setItem('scale', ctxScale);
 }
 
@@ -28,8 +34,9 @@ if (localStorage.getItem('data') !== null) {
   const oldImg = new Image();
   oldImg.src = localStorage.getItem('data');
   oldImg.onload = () => {
+    ctxScale = +localStorage.getItem('scale');
     ctx.drawImage(oldImg, 0, 0);
-    scale(localStorage.getItem('scale'));
+    ctx.scale(+localStorage.getItem('scale'), +localStorage.getItem('scale'));
   };
 } else {
   scale(4);
@@ -68,13 +75,6 @@ canvas.addEventListener('click', (e) => {
     addPixel(e);
   }
 
-  // implement color picker
-  if (instrument === 1) {
-    // const x = Math.floor(e.offsetX / pixelSize);
-    // const y = Math.floor(e.offsetY / pixelSize);
-    prevColor.value = lastColor;
-    lastColor = colorSwitcher.value;
-  }
   saveCtx();
 });
 
@@ -167,31 +167,41 @@ function getLinkToImage() {
   return link;
 }
 
+function addImage(img) {
+  let pixelSize = ctxScale;
+  let canvasSize = canvas.width / ctxScale;
+  let startX = 0;
+  let startY = 0;
+  console.log(img.width, img.height)
+  if (img.width > img.height) {
+    img.height = (img.height / img.width) * canvasSize / pixelSize;
+    img.width = canvasSize / pixelSize;
+    startY = (canvasSize - img.height * ctxScale) / 2;
+  } else if (img.height > img.width) {
+    img.width = (img.width / img.height) * canvasSize / pixelSize;
+    img.height = canvasSize / pixelSize;
+    startX = (canvasSize - img.width * ctxScale) / 2;
+  } else {
+    img.width = canvasSize / pixelSize;
+    img.height = canvasSize / pixelSize;
+  }
+
+  console.log( img.width, img.height)
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(img, startX, startY, img.width * pixelSize , img.height * pixelSize);
+}
+
 const loadButton = document.querySelector('.form__load');
 loadButton.addEventListener('click', async () => {
   const img = new Image();
-  let link = await getLinkToImage();
+  // let link = await getLinkToImage();
 
   img.onload = () => {
-    if (img.width > 128) {
-      img.height = (img.height / img.width) * 128;
-      img.width = 128;
-      const startY = (128 - img.height) / 2;
-      ctx.drawImage(img, 0, startY, img.width, img.height);
-    } else if (img.height > 128) {
-      img.width = (img.widht / img.height) * 128;
-      img.height = 128;
-      const startX = (128 - img.width) / 2;
-      ctx.drawImage(img, startX, 0, img.width, ctxScale);
-    } else if (img.width < 128 && img.height < 128) {
-      const startX = (128 - img.width) / 2;
-      const startY = (128 - img.height) / 2;
-      ctx.drawImage(img, startX, startY, img.width, img.height);
-    }
-    saveCtx();
+    addImage(img);
   };
+
   img.crossOrigin = 'anonymous';
-  img.src = link;
+  img.src = data;
 });
 
 // greyscale
@@ -216,3 +226,62 @@ const BWButton = document.querySelector('.form__bw');
 BWButton.addEventListener('click', () => {
   grey();
 });
+
+const sizeButtons = document.querySelectorAll('.size-switcher');
+const [size128Button, size256Button, size512Button] = sizeButtons;
+
+function makeActive(btn) {
+  sizeButtons.forEach(button => button.classList.remove('sheet__size-switcher_active'));
+  btn.classList.add('sheet__size-switcher_active');
+}
+
+size128Button.addEventListener('click', function() {
+  makeActive(this);
+  scale(4);
+
+  const img = new Image();
+  // let link = await getLinkToImage();
+
+  img.onload = () => {
+    addImage(img);
+  };
+
+  img.crossOrigin = 'anonymous';
+  img.src = data;
+});
+
+size256Button.addEventListener('click', function() {
+  makeActive(this);
+  scale(2);
+
+  const img = new Image();
+  // let link = await getLinkToImage();
+
+  img.onload = () => {
+    addImage(img);
+  };
+
+  img.crossOrigin = 'anonymous';
+  img.src = data;
+});
+
+size512Button.addEventListener('click', async function() {
+  makeActive(this);
+  scale(1);
+
+  const img = new Image();
+  // let link = await getLinkToImage();
+
+  img.onload = () => {
+    addImage(img);
+  };
+
+  img.crossOrigin = 'anonymous';
+  img.src = data;
+});
+
+// prevent form from reloading
+const form = document.querySelector('.form');
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+})
