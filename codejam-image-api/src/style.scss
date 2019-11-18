@@ -51,6 +51,8 @@
     font-family: "Roboto";
     border-radius: 4px;
     background-color: lightblue;
+    outline: none;
+    cursor: pointer;
   }
 }
 
@@ -121,6 +123,8 @@
 }
 
 .color {
+  cursor: default;
+
   &__icon {
     margin-right: 12px;
     border-radius: 50%;
@@ -141,6 +145,7 @@
       height: 100%;
       border-radius: 50%;
       border: 1px solid #000000;
+      cursor: pointer;
     }
   }
 
@@ -203,6 +208,8 @@
     width: 70px;
     background-color: greenyellow;
     border-radius: 4px;
+    outline: none;
+    cursor: pointer;
   }
 
   &__load {
