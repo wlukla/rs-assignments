@@ -35,7 +35,13 @@ function changeScale(i) {
 }
 
 function makeActive(btn) {
-  sizeButtons.forEach((button) => button.classList.remove('sheet__size-switcher_active'));
+  console.log(btn.classList);
+  if (btn.classList.contains('size-switcher')) {
+    sizeButtons.forEach((button) => button.classList.remove('sheet__size-switcher_active'));
+  } else {
+    toolButtons.forEach((button) => button.classList.remove('sheet__tool_active'));
+  }
+
   btn.classList.add('sheet__size-switcher_active');
 }
 
@@ -46,6 +52,7 @@ window.onload = () => {
 
   // updating everything from storage
   if (localStorage.getItem('data') !== null) {
+    hasImage = true;
     // setting last color
     colorSwitcher.value = window.localStorage.getItem('color');
 
@@ -83,16 +90,13 @@ document.addEventListener('click', (e) => {
 
   if (e.path.includes(pencil)) {
     instrument = 2;
-    toolButtons.forEach((el) => el.classList.remove('sheet__tool_selected'));
-    pencil.classList.add('sheet__tool_selected');
+    makeActive(pencil);
   } else if (e.path.includes(fill)) {
     instrument = 0;
-    toolButtons.forEach((el) => el.classList.remove('sheet__tool_selected'));
-    fill.classList.add('sheet__tool_selected');
+    makeActive(fill);
   } else if (e.path.includes(pick)) {
     instrument = 1;
-    toolButtons.forEach((el) => el.classList.remove('sheet__tool_selected'));
-    pick.classList.add('sheet__tool_selected');
+    makeActive(pick);
   }
 });
 
