@@ -38,11 +38,11 @@ function makeActive(btn) {
   console.log(btn.classList);
   if (btn.classList.contains('size-switcher')) {
     sizeButtons.forEach((button) => button.classList.remove('sheet__size-switcher_active'));
+    btn.classList.add('sheet__size-switcher_active');
   } else {
-    toolButtons.forEach((button) => button.classList.remove('sheet__tool_active'));
+    toolButtons.forEach((button) => button.classList.remove('sheet__tool_selected'));
+    btn.classList.add('sheet__tool_selected');
   }
-
-  btn.classList.add('sheet__size-switcher_active');
 }
 
 window.onload = () => {
