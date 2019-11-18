@@ -1,11 +1,12 @@
 import './style.scss';
-import 'normalize.css'
+import 'normalize.css';
 import * as Netlify from './netlify';
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 let ctxScale = 1;
 let data = '';
+let hasImage = false;
 
 const colorSwitcher = document.querySelector('.color__icon_current');
 const prevColor = document.querySelector('.color__icon_prev');
@@ -35,7 +36,6 @@ function changeScale(i) {
 }
 
 function makeActive(btn) {
-  console.log(btn.classList);
   if (btn.classList.contains('size-switcher')) {
     sizeButtons.forEach((button) => button.classList.remove('sheet__size-switcher_active'));
     btn.classList.add('sheet__size-switcher_active');
@@ -204,8 +204,6 @@ function getLinkToImage() {
 
   return getLink(url);
 }
-
-let hasImage = false;
 
 function addImage(img) {
   const pixelSize = ctxScale;
