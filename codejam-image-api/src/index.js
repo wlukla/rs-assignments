@@ -1,4 +1,5 @@
 import './style.scss';
+import 'normalize.css'
 import * as Netlify from './netlify';
 
 const canvas = document.getElementById('canvas');
