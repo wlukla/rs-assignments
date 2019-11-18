@@ -43,6 +43,12 @@
   right: 0;
   top: 0;
   cursor: pointer;
+
+  &__login {
+    width: 200px;
+    height: 30px;
+    margin-right: 100px;
+  }
 }
 
 .sheets-container {
