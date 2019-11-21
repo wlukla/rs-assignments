@@ -1,3 +1,6 @@
+import 'lodash';
+import './style.scss';
+
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const colorSwitcher = document.querySelector('.color__icon_current');
