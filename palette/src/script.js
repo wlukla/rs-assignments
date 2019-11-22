@@ -1,5 +1,5 @@
 import './style.scss';
-import 'normalize.css'
+import 'normalize.css';
 import * as Netlify from './netlify';
 
 const canvas = document.getElementById('canvas');
@@ -17,6 +17,7 @@ const toolButtons = document.querySelectorAll('.sheet__tool');
 const [fill, pick, pencil] = toolButtons;
 let instrument = null;
 let isDrawing = false;
+let hasImage = false;
 
 const input = document.querySelector('.form__text-input');
 
@@ -35,7 +36,6 @@ function changeScale(i) {
 }
 
 function makeActive(btn) {
-  console.log(btn.classList);
   if (btn.classList.contains('size-switcher')) {
     sizeButtons.forEach((button) => button.classList.remove('sheet__size-switcher_active'));
     btn.classList.add('sheet__size-switcher_active');
@@ -133,10 +133,88 @@ document.addEventListener('click', (e) => {
   }
 });
 
+// fill
+function fillArea(startX, startY) {
+  const colorLayer = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const pixelStack = [[startX, startY]];
+  const initialPos = (startY * 4) * canvas.width + startX * 4;
+  const startR = colorLayer.data[initialPos];
+  const startG = colorLayer.data[initialPos + 1];
+  const startB = colorLayer.data[initialPos + 2];
+
+  const fillColorR = parseInt(colorSwitcher.value.slice(1, 3), 16);
+  const fillColorG = parseInt(colorSwitcher.value.slice(3, 5), 16);
+  const fillColorB = parseInt(colorSwitcher.value.slice(5, 7), 16);
+
+  function matchStartColor(pixelPos) {
+    const r = colorLayer.data[pixelPos];
+    const g = colorLayer.data[pixelPos + 1];
+    const b = colorLayer.data[pixelPos + 2];
+
+    return (r === startR && g === startG && b === startB);
+  }
+
+  function colorPixel(pixelPos) {
+    colorLayer.data[pixelPos] = fillColorR;
+    colorLayer.data[pixelPos + 1] = fillColorG;
+    colorLayer.data[pixelPos + 2] = fillColorB;
+    colorLayer.data[pixelPos + 3] = 255;
+  }
+
+  while (pixelStack.length) {
+    let reachLeft = false;
+    let reachRight = false;
+    const drawingBoundTop = 0;
+    const newPos = pixelStack.pop();
+    const x = newPos[0];
+    let y = newPos[1];
+    let pixelPos = (y * canvas.width + x) * 4;
+    pixelPos = (y * canvas.width + x) * 4;
+    while (y - 1 >= drawingBoundTop && matchStartColor(pixelPos)) {
+      y -= 1;
+      pixelPos -= canvas.width * 4;
+    }
+    pixelPos += canvas.width * 4;
+    y += 1;
+    while ((y + 1) < canvas.height - 1 && matchStartColor(pixelPos)) {
+      y += 1;
+      colorPixel(pixelPos);
+
+      if (x > 0) {
+        if (matchStartColor(pixelPos - 4)) {
+          if (!reachLeft) {
+            pixelStack.push([x - 1, y]);
+            reachLeft = true;
+          }
+        } else if (reachLeft) {
+          reachLeft = false;
+        }
+      }
+
+      if (x < canvas.width - 1) {
+        if (matchStartColor(pixelPos + 4)) {
+          if (!reachRight) {
+            pixelStack.push([x + 1, y]);
+            reachRight = true;
+          }
+        } else if (reachRight) {
+          reachRight = false;
+        }
+      }
+
+      pixelPos += canvas.width * 4;
+    }
+  }
+  ctx.putImageData(colorLayer, 0, 0);
+}
+
+
 canvas.addEventListener('mousedown', (e) => {
   if (instrument === 2) {
     isDrawing = true;
     drawPixel(e);
+  } else if (instrument === 0) {
+    fillArea(e.offsetX, e.offsetY);
   }
 });
 
@@ -204,8 +282,6 @@ function getLinkToImage() {
 
   return getLink(url);
 }
-
-let hasImage = false;
 
 function addImage(img) {
   const pixelSize = ctxScale;
