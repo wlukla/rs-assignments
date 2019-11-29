@@ -107,9 +107,37 @@ function drawPixel(e) {
   ctx.fillRect(startX, startY, ctxScale, ctxScale);
 }
 
+function toHex(n) {
+  let val = parseInt(n, 10);
+  if (Number.isNaN(val)) return 'D3';
+  val = Math.max(0, Math.min(val, 255));
+  return '0123456789ABCDEF'.charAt((val - (val % 16)) / 16) + '0123456789ABCDEF'.charAt(val % 16);
+}
+
+function rgbToHex(R, G, B) {
+  return toHex(R) + toHex(G) + toHex(B);
+}
+
 canvas.addEventListener('click', (e) => {
   if (instrument === 2) {
     drawPixel(e);
+  } else if (instrument === 1) {
+    const x = Math.floor(e.offsetX);
+    const y = Math.floor(e.offsetY);
+    const imageData = ctx.getImageData(x, y, 1, 1).data;
+
+    lastColor = colorSwitcher.value;
+
+    if (imageData[3] === 0) {
+      colorSwitcher.value = '#D3D3D3';
+    } else {
+      const color = rgbToHex(imageData[0], imageData[1], imageData[2]);
+      colorSwitcher.value = `#${color}`;
+    }
+    // console.log(imageData);
+
+    prevColor.value = lastColor;
+    window.localStorage.setItem('color', lastColor);
   }
   saveCtx();
 });
