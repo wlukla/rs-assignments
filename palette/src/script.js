@@ -56,6 +56,9 @@ window.onload = () => {
     // setting last color
     colorSwitcher.value = window.localStorage.getItem('color');
 
+    // loading previousColor
+    prevColor.value = window.localStorage.getItem('prevColor');
+
     // setting link to image
     data = window.localStorage.getItem('lastImg');
 
@@ -83,6 +86,7 @@ window.onload = () => {
 function saveCtx() {
   window.localStorage.setItem('data', canvas.toDataURL());
   window.localStorage.setItem('color', colorSwitcher.value);
+  window.localStorage.setItem('prevColor', prevColor.value);
 }
 
 document.addEventListener('click', (e) => {
@@ -159,6 +163,7 @@ document.addEventListener('click', (e) => {
   if (e.target === prevColor) {
     [prevColor.value, colorSwitcher.value] = [colorSwitcher.value, prevColor.value];
   }
+  saveCtx();
 });
 
 // fill
