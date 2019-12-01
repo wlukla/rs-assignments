@@ -4,11 +4,8 @@
   "description": "",
   "private": true,
   "dependencies": {
-    "html-loader": "^0.5.5",
     "lodash": "^4.17.15",
-    "normalize.css": "^8.0.1",
-    "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.9.0"
+    "normalize.css": "^8.0.1"
   },
   "devDependencies": {
     "css-loader": "^3.2.0",
@@ -22,7 +19,10 @@
     "scss-loader": "0.0.1",
     "style-loader": "^1.0.0",
     "url-loader": "^2.2.0",
-    "webpack": "^4.41.2"
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.9.0",
+    "html-loader": "^0.5.5"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
