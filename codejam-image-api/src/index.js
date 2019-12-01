@@ -198,7 +198,7 @@ function getLinkToImage() {
   async function getLink(req) {
     const response = await fetch(req);
     const json = await response.json();
-    const link = await json.urls.small;
+    const link = json.urls.small;
     return link;
   }
 
