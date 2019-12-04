@@ -60,6 +60,7 @@ Lodash has a groups of general functions for simplifying common programming task
 * improves style of code
 * highly readable
 * increases programmer's productivity
+* adds new functions that not implemented in Vanilla JS
 * extends built into JS methods
 
 ### Disadvantages:
@@ -93,7 +94,7 @@ Lang collection is very diversified. It contains methods that work on a variety 
 
 ### Math
 
-While I will leave using Lodash methods like  `_.add()`  without a comment 😅, methods from Math collection that operates on  **number arrays**  can prove to be quite useful. Of course, you can just use the native  `.map()`  or  `.reduce()`  methods from built-in Array API, but, arguably, the convenience of just calling e.g.  `_.max()`  or  `_.mean()`  is just too high to ignore.
+While I will leave using Lodash methods like  `_.add()`  without a comment, methods from Math collection that operates on  **number arrays**  can prove to be quite useful. Of course, you can just use the native  `.map()`  or  `.reduce()`  methods from built-in Array API, but, arguably, the convenience of just calling e.g.  `_.max()`  or  `_.mean()`  is just too high to ignore.
 
 ### Number
 
