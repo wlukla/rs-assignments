@@ -7,11 +7,20 @@ Lodash - is a JavaScript library which provides utility functions for common pro
 
 Lodash is instant productivity kit when you’re working with JavaScript
 
-## History?
+## Do I need Lodash?
 
-In 2009 Underscore.js (common JS library) was first released and, for a guite long period of time, played first fiddle. Nowdays it has been retaken by Lodash.
+### Advantages:
+* improves style of code
+* highly readable
+* increases programmer's productivity
+* adds new functions that not implemented in Vanilla JS
+* extends built into JS methods
 
-Lodash draws most of its ideas from Underscore.js and now receives maintenance from the original contributors to Underscore.js.
+### Disadvantages:
+* you'll probably like this library and use it all over
+* library overuse may lead to worse performance
+
+It's useful and awesome. You just shouldn't get into it so much. Remember that JS itself still provides a lot of methods on its own. Its Lodash features that JS doesn't have, that you should definitely use when needed.
 
 ## Quick install
 
@@ -33,41 +42,6 @@ Lodash draws most of its ideas from Underscore.js and now receives maintenance f
 	```html
 	<script src="lodash.js"></script>
 	```
-
-
-## Lodash structure
-
-Lodash has a groups of general functions for simplifying common programming tasks. Including functions for:
-
-1. Array
-2. Collection
-3. Date
-4. Function
-5. Lang
-6. Math
-7. Number
-8. Object
-9. Seq
-10. String
-11. Util
-12. Properties
-13. Methods
-
-
-## Do I need Lodash?
-
-### Advantages:
-* improves style of code
-* highly readable
-* increases programmer's productivity
-* adds new functions that not implemented in Vanilla JS
-* extends built into JS methods
-
-### Disadvantages:
-* you'll probably like this library and use it all over
-* library overuse may lead to worse performance
-
-It's useful and awesome. You just shouldn't get into it so much. Remember that JS itself still provides a lot of methods on its own. Its Lodash features that JS doesn't have, that you should definitely use when needed.
 
 ## Lets look at it
 
