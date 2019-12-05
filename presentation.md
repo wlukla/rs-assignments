@@ -47,11 +47,11 @@ It's useful and awesome. You just shouldn't get into it so much. Remember that J
 
 ### Array
 
-Naturally, all Lodash array methods works on... arrays. It's probably the biggest collection of Lodash methods, and for good reason. It includes methods allowing you to easily get the difference of two arrays `_.difference()`, ensures all values are unique `_.uniq()`, and remove any of them with ease `_.remove()`. Just remember that there are some "useless" methods too. Examples of such are `_.join()`, `_.reverse()`, and `_.indexOf()` - all of which are natively built into JS in the same form! With ES6 this list becomes even longer!
+Naturally, all Lodash array methods work on arrays. It's probably the biggest collection of Lodash methods, and for good reason. It includes methods allowing you to easily get the difference of two arrays `_.difference()`, ensures all values are unique `_.uniq()`, and remove any of them with ease `_.remove()`. Just remember that there are some "useless" methods too. Examples of such are `_.join()`, `_.reverse()`, and `_.indexOf()` - all of which are natively built into JS in the same form! With ES6 this list becomes even longer!
 
 ### Collection
 
-Collection, in Lodash vocabulary, seems to be used to reference an object or an array (sometimes even a string). And this group includes methods that can be used to work with them. Combining the ease-of-use of array methods with objects can be especially useful. Of course, such collections even with nice API cannot be considered a data structure on its own. E.g. when iterating over an object, you cannot be sure of the order of its properties (like with arrays). If real data structures are what you want, then you might have to use a different library (e.g. Immutable.js). Otherwise, these methods truly simplify any kind of interaction with objects (arrays have most of these methods built-in).
+Collection, in Lodash vocabulary, seems to be used to reference an object or an array (sometimes even a string). And this group includes methods that can be used to work with them. Combining the ease-of-use of array methods with objects can be especially useful. Of course, such collections even with nice API cannot be considered a data structure on its own.
 
 ### Date
 
@@ -64,15 +64,15 @@ Function collection most probably includes some of the most complex methods. Her
 
 ### Lang
 
-Lang collection is very diversified. It contains methods that work on a variety of data types. These cover various  **is checks**  (e.g.  `_.isArray()`_,_ `_.isNumber()`),  **value conversions**  (e.g.  `_.toNumber()`,  `_.toString()`),  **cloning**  and  **deep cloning**  functionalities. While the first two categories don't require much boilerplate when used with plain JS (recommended), the cloning methods are very useful. They provide a nice alternative for unavailable in some browsers  `Object.assign()`, and, when it comes to the deep version, they provide features that even mentioned native method doesn't cover!
+Lang collection is very diversified. It contains methods that work on a variety of data types. They provide a nice alternative for unavailable in some browsers  `Object.assign()`, and, when it comes to the deep version, they provide features that even mentioned native method doesn't cover! It also has useful **cloning**  and  **deep cloning**functionalities. But still, these cover various  **is checks**  (e.g.  `_.isArray()`_,_ `_.isNumber()`),  **value conversions**  (e.g.  `_.toNumber()`,  `_.toString()`), which don't require much headache when used with plain JS.
 
 ### Math
 
-While I will leave using Lodash methods like  `_.add()`  without a comment, methods from Math collection that operates on  **number arrays**  can prove to be quite useful. Of course, you can just use the native  `.map()`  or  `.reduce()`  methods from built-in Array API, but, arguably, the convenience of just calling e.g.  `_.max()`  or  `_.mean()`  is just too high to ignore.
+Methods from Math collection that operates on  **number arrays**  can prove to be quite useful. Of course, you can just use the native  `.map()`  or  `.reduce()`  methods from built-in Array API, but, arguably, the convenience of just calling e.g.  `_.max()`  or  `_.mean()`  is just too high to ignore. But I will leave using Lodash methods like  `_.add()`  without a comment
 
 ### Number
 
-Number collection, in fact, includes only 3 methods i.e.  `_.clamp()`,  `_.inRange()`  and  `_.random()`, all of which provide some casual functionalities with  **additional features**. Take  `_.random()`  for example. Instead of outputting completely random number (like usual), you can easily limit it to a  **certain range**  and decide whether you want it to be an  **integer or floating-point**  number with just a simple set of arguments. It is for such details that many developers have fallen in love with Lodash.
+Number collection, in fact, includes only 3 methods i.e.  `_.clamp()`,  `_.inRange()`  and  `_.random()`, all of which provide some casual functionalities with  **additional features**. Take  `_.random()`  for example. Instead of outputting completely random number (like usual), you can easily limit it to a  **certain range**  and decide whether you want it to be an  **integer or floating-point**  number with just a simple set of arguments. For such details that many developers have fallen in love with Lodash.
 
 ### Object
 
@@ -84,7 +84,7 @@ Seq is a collection of prototype methods, centered around one functionality -  *
 
 ### String
 
-Beyond providing standard, native API copies, methods from string collection cover some pretty useful capabilities. I'm mainly talking about converting between  **different case types**, which may seem really easy but isn't implemented natively, requiring developers to create quite a big boilerplate for such simple cases.  Of course, there are also methods for **swapping letters)** - `_.deburr()`,  **string-array conversion** - `_.words()`,  **regex integration** - `_.replace()`  and more, but still... it's not really something that would require much effort in plain JS.
+Beyond providing standard, native API copies, methods from string collection cover some pretty useful capabilities. I'm mainly talking about converting between  **different case types**, which may seem really easy but isn't implemented natively. Of course, there are also methods for **swapping letters** - `_.deburr()`,  **string-array conversion** - `_.words()`,  **regex integration** - `_.replace()`  and more.
 
 ### Util
 
