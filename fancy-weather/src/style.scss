@@ -1,0 +1,128 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  padding: 40px 92px;
+  width: 100vw;
+  height: 100vh;
+  background-color: grey;
+  box-sizing: border-box;
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  color: #FFFFFF;
+}
+
+.left {
+  width: 60%;
+}
+
+.button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  height: 100%;
+  border-radius: 6px;
+  background-color: rgba(174, 181, 185, 0.5);
+  cursor: pointer;
+}
+
+.control-block {
+  display: flex;
+  justify-content: space-between;
+  width: 30%;
+  height: 44px;
+}
+
+.refresh-button {
+  width: 44px;
+}
+
+.lang-switch-button {
+  justify-content: space-around;
+  width: 72px;
+}
+
+.grad-switch-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 88px;
+  text-align: center;
+  background-color: transparent;
+  overflow: hidden;
+
+  &__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    height: 100%;
+    background-color: rgba(72, 72, 72, 0.5);
+
+    &_active {
+      background-color: rgba(174, 181, 185, 0.5);
+    }
+  }
+}
+
+.head {
+  margin-top: 70px;
+
+  &__location {
+    font-size: 44px;
+    text-transform: uppercase;
+  }
+
+  &__date,
+  &__time {
+    font-size: 24px;
+  }
+}
+
+.current-weather {
+  position: relative;
+  padding-bottom: 40px;
+  font-size: 200px;
+
+  &__img {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}
+
+.weather-info {
+  position: absolute;
+  bottom: 80px;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  font-size: 22px;
+}
+
+.three-days-block {
+  display: flex;
+  justify-content: space-around;
+}
+
+.day {
+  &__name {
+    margin-bottom: 12px;
+    font-size: 22px;
+  }
+}
+
+.bottom {
+  display: flex;
+
+  &__grad {
+    font-size: 80px;
+  }
+}

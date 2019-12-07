@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Fancy Weather</title>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="wrapper">
+  <div class="left">
+    <div class="control-block">
+      <div class="refresh-button button">
+        <img class="refresh-button__img" src="assets/img/refresh-icon.svg" alt="refresh icon">
+      </div>
+      <div class="lang-switch-button button">
+        <span class="lang-switch-button__current-lang">EN</span>
+        <img class="lang-switch-button__img" src="assets/img/arrow-down.svg" alt="arrow down icon">
+      </div>
+      <div class="grad-switch-button button">
+        <span class="grad-switch-button__item grad-switch-button__item_active">°F</span>
+        <span class="grad-switch-button__item">°C</span>
+      </div>
+    </div>
+    <div class="today-weather-block">
+      <div class="head">
+        <h2 class="head__location">Aaaaaa</h2>
+        <span class="head__date">aaaaa</span>
+        <span class="head__time">aaaa</span>
+      </div>
+      <div class="current-weather">
+        <h2 class="current-weather__grad">10°</h2>
+        <img class="current-weather__img" src="#" alt="">
+        <div class="weather-info">
+          <span class="weather-info__heading"></span>
+          <span class="weather-info__feels-like"></span>
+          <span class="weather-info__wind"></span>
+          <span class="weather-info__humidity">aa</span>
+        </div>
+      </div>
+    </div>
+    <div class="three-days-block">
+      <div class="day">
+        <h3 class="day__name">DDD</h3>
+        <div class="bottom">
+          <span class="bottom__grad">10°</span>
+          <img class="bottom__img" src="#" alt="">
+        </div>
+      </div>
+      <div class="day">
+        <h3 class="day__name">DDD</h3>
+        <div class="bottom">
+          <span class="bottom__grad">10°</span>
+          <img class="bottom__img" src="#" alt="">
+        </div>
+      </div>
+      <div class="day">
+        <h3 class="day__name">DDD</h3>
+        <div class="bottom">
+          <span class="bottom__grad">10°</span>
+          <img class="bottom__img" src="#" alt="">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="geo-block">
+    <div class="search">
+      <input class="search__input" type="text">
+      <button class="search__button">Search</button>
+    </div>
+    <div class="location">
+      <span class="location__lon"></span>
+      <span class="location__lat"></span>
+    </div>
+  </div>
+</div>
+</body>
+</html>
