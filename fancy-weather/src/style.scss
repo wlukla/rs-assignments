@@ -88,6 +88,7 @@
 
 .current-weather {
   position: relative;
+  width: 80%;
   padding-bottom: 40px;
   font-size: 200px;
 
@@ -105,6 +106,11 @@
   display: flex;
   flex-direction: column;
   font-size: 22px;
+  text-transform: uppercase;
+
+  &__item {
+    margin-bottom: 6px;
+  }
 }
 
 .three-days-block {
