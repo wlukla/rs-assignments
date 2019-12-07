@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: 'development',
-  entry:{
+  entry: {
     app: './src/app.js',
   },
   output: {
@@ -22,11 +22,11 @@ module.exports = {
         use: {
           loader: 'html-loader',
           options: { minimize: false },
-        }
+        },
       },
       {
-        test:/\.(s*)css$/,
-        use:['style-loader','css-loader', 'sass-loader']
+        test: /\.(s*)css$/,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
@@ -34,9 +34,9 @@ module.exports = {
           loader: 'url-loader',
           options: {
             limit: 8000, // Convert images < 8kb to base64 strings
-            name: 'assets/img/[hash]-[name].[ext]'
-          }
-        }]
+            name: 'assets/img/[hash]-[name].[ext]',
+          },
+        }],
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
@@ -49,7 +49,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/index.html',
-      filename: './index.html'
-    })
-  ]
+      filename: './index.html',
+    }),
+  ],
 };
