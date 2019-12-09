@@ -7,6 +7,8 @@ const windElement = document.querySelector('.weather-info__wind');
 const humidityElement = document.querySelector('.weather-info__humidity');
 const timeElement = document.querySelector('.head__time');
 const dateElement = document.querySelector('.head__date');
+const threeDaysTempElements = document.querySelectorAll('.bottom__grad');
+const threeDaysDayElements = document.querySelectorAll('.day__name');
 
 function getFeelsLikeCelsius(temp, hum) {
   return Math.round(-8.78469475556
@@ -69,11 +71,29 @@ function setDate(data) {
   dateElement.innerHTML = date;
 }
 
+function setThreeDaysTemperature(data) {
+  const todayDate = new Date().getDate();
+  const weatherArr = data.list.filter((el) => {
+    const dayDate = Number(new Date(el.dt).getDate());
+    const dayHours = Number(el.dt_txt.slice(11, 13));
+    return dayDate !== todayDate && dayHours === 15;
+  });
+
+  for (let i = 0; i < threeDaysTempElements.length; i += 1) {
+    threeDaysTempElements[i].innerHTML = `${Math.round(weatherArr[i].main.temp)}°`;
+    threeDaysDayElements[i].innerHTML = `${new Date(weatherArr[i].dt * 1000)
+      .toString()
+      .slice(0, 3)}`;
+  }
+}
+
+
 async function updateTemp() {
   const data = await getWeatherDataByInput();
   setDate(data);
   setTime(data);
   setTodayTemperature(data);
+  setThreeDaysTemperature(data);
 }
 
 async function loadTemp(city) {
@@ -81,6 +101,7 @@ async function loadTemp(city) {
   setDate(data);
   setTime(data);
   setTodayTemperature(data);
+  setThreeDaysTemperature(data);
 }
 
 export { searchButton, updateTemp, loadTemp };
