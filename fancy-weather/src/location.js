@@ -21,8 +21,10 @@ function setCity(data) {
   cityElement.innerHTML = city;
 }
 
-export default async function setUserPosition() {
+async function setUserPosition() {
   const data = await getLocation();
   setCoordinates(data);
   setCity(data);
 }
+
+export { setUserPosition, cityElement };

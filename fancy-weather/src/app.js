@@ -1,10 +1,12 @@
 import 'normalize.css';
 import './style.scss';
-import setUserLocation from './location';
+import * as Location from './location';
 import * as Weather from './weather';
 
-window.addEventListener('load', () => {
-  setUserLocation();
+window.addEventListener('load', async () => {
+  await Location.setUserPosition();
+  const city = Location.cityElement.innerHTML.replace(' ', '');
+  Weather.loadTemp(city);
 });
 
 Weather.searchButton.addEventListener('click', () => {

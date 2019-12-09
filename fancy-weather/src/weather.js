@@ -26,6 +26,13 @@ async function getWeatherDataByInput() {
   return data;
 }
 
+async function getWeatherDataByUserPosition(city) {
+  const url = `http://api.openweathermap.org/data/2.5/forecast?q=${city}&APPID=${WEATHER_KEY}&units=metric`;
+
+  const data = await fetch(url).then((res) => res.json());
+  return data;
+}
+
 function setTodayTemperature(data) {
   const tempInfo = data.list[0];
 
@@ -55,4 +62,10 @@ async function updateTemp() {
   setTodayTemperature(data);
 }
 
-export { searchButton, updateTemp };
+async function loadTemp(city) {
+  const data = await getWeatherDataByUserPosition(city);
+  setTime(data);
+  setTodayTemperature(data);
+}
+
+export { searchButton, updateTemp, loadTemp };
