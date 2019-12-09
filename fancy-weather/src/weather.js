@@ -49,21 +49,36 @@ function setTodayTemperature(data) {
 function setTime(data) {
   const { timezone } = data.city;
   const date = new Date();
-  const hours = date.getUTCHours() + timezone / 60 / 60;
+  let hours = date.getUTCHours() + timezone / 60 / 60;
   const minutes = date.getUTCMinutes();
+
+  if (hours > 23) {
+    hours -= 24;
+  }
 
   const time = `${hours}:${minutes}`;
   timeElement.innerHTML = `${time}`;
 }
 
+function setDate(data) {
+  const date = `${new Date(data.list[0].dt)
+    .toString()
+    .split(' ')
+    .slice(0, 3)
+    .join(' ')},`;
+  dateElement.innerHTML = date;
+}
+
 async function updateTemp() {
   const data = await getWeatherDataByInput();
+  setDate(data);
   setTime(data);
   setTodayTemperature(data);
 }
 
 async function loadTemp(city) {
   const data = await getWeatherDataByUserPosition(city);
+  setDate(data);
   setTime(data);
   setTodayTemperature(data);
 }
