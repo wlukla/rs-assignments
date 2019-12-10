@@ -31,10 +31,10 @@ module.exports = {
       {
         test: /\.(png|svg|jpg|gif)$/,
         use: [{
-          loader: 'url-loader',
+          loader: 'file-loader',
           options: {
             limit: 8000, // Convert images < 8kb to base64 strings
-            name: 'assets/img/[hash]-[name].[ext]',
+            name: 'assets/img/[name].[ext]',
           },
         }],
       },

@@ -9,6 +9,8 @@ const timeElement = document.querySelector('.head__time');
 const dateElement = document.querySelector('.head__date');
 const threeDaysTempElements = document.querySelectorAll('.bottom__grad');
 const threeDaysDayElements = document.querySelectorAll('.day__name');
+const todayIconElement = document.querySelector('.current-weather__img');
+const threeDaysIconElements = document.querySelectorAll('.bottom__img');
 
 function getFeelsLikeCelsius(temp, hum) {
   return Math.round(-8.78469475556
@@ -71,6 +73,21 @@ function setDate(data) {
   dateElement.innerHTML = date;
 }
 
+function setThreeDaysIcons(weatherArr) {
+  for (let i = 0; i < threeDaysIconElements.length; i += 1) {
+    let weatherId = weatherArr[i].weather[0].id;
+
+    if (weatherId > 800) {
+      weatherId = 80;
+    } else {
+      weatherId = Math.floor(weatherId / 100);
+    }
+
+    const path = `assets/img/id${weatherId}.svg`;
+    threeDaysIconElements[i].src = path;
+  }
+}
+
 function setThreeDaysTemperature(data) {
   const todayDate = new Date().getDate();
   const weatherArr = data.list.filter((el) => {
@@ -85,8 +102,17 @@ function setThreeDaysTemperature(data) {
       .toString()
       .slice(0, 3)}`;
   }
+
+  setThreeDaysIcons(weatherArr);
 }
 
+function setTodayIcon(data) {
+  const tempInfo = data.list[0];
+  const weatherId = tempInfo.weather[0].id > 800 ? 80 : Math.floor(tempInfo.weather[0].id / 100);
+  const weatherIconPath = `assets/img/id${weatherId}.svg`;
+
+  todayIconElement.src = weatherIconPath;
+}
 
 async function updateTemp() {
   const data = await getWeatherDataByInput();
@@ -94,6 +120,7 @@ async function updateTemp() {
   setTime(data);
   setTodayTemperature(data);
   setThreeDaysTemperature(data);
+  setTodayIcon(data);
 }
 
 async function loadTemp(city) {
@@ -102,6 +129,7 @@ async function loadTemp(city) {
   setTime(data);
   setTodayTemperature(data);
   setThreeDaysTemperature(data);
+  setTodayIcon(data);
 }
 
 export { searchButton, updateTemp, loadTemp };
