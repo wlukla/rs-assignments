@@ -11,6 +11,7 @@ const threeDaysTempElements = document.querySelectorAll('.bottom__grad');
 const threeDaysDayElements = document.querySelectorAll('.day__name');
 const todayIconElement = document.querySelector('.current-weather__img');
 const threeDaysIconElements = document.querySelectorAll('.bottom__img');
+const gradButtons = document.querySelectorAll('.grad-switch-button__item');
 
 function getFeelsLikeCelsius(temp, hum) {
   return Math.round(-8.78469475556
@@ -132,4 +133,16 @@ async function loadTemp(city) {
   setTodayIcon(data);
 }
 
-export { searchButton, updateTemp, loadTemp };
+function toFarenheit() {
+  gradButtons[1].classList.remove('grad-switch-button__item_active');
+  gradButtons[0].classList.add('grad-switch-button__item_active');
+}
+
+function toCelsius() {
+  gradButtons[0].classList.remove('grad-switch-button__item_active');
+  gradButtons[1].classList.add('grad-switch-button__item_active');
+}
+
+export {
+  searchButton, updateTemp, loadTemp, gradButtons, toFarenheit, toCelsius,
+};

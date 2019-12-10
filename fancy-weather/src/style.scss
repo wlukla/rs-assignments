@@ -65,9 +65,11 @@
     width: 50%;
     height: 100%;
     background-color: rgba(72, 72, 72, 0.5);
+    opacity: 0.3;
 
     &_active {
       background-color: rgba(174, 181, 185, 0.5);
+      opacity: 1;
     }
   }
 }

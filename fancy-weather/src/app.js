@@ -19,3 +19,11 @@ window.addEventListener('load', async () => {
 Weather.searchButton.addEventListener('click', () => {
   Weather.updateTemp();
 });
+
+Weather.gradButtons[0].addEventListener('click', () => {
+  Weather.toFarenheit();
+});
+
+Weather.gradButtons[1].addEventListener('click', () => {
+  Weather.toCelsius();
+});
