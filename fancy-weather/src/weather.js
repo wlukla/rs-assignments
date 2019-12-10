@@ -1,3 +1,5 @@
+import { cityElement } from './location';
+
 const WEATHER_KEY = 'fb91c1e036059dcec537578ece8cdcf8';
 const input = document.querySelector('.search__input');
 const todayTempElement = document.querySelector('.current-weather__grad');
@@ -36,6 +38,13 @@ async function getWeatherDataByUserPosition(city) {
 
   const data = await fetch(url).then((res) => res.json());
   return data;
+}
+
+function setLocation(data) {
+  const city = data.city.name;
+  const { country } = data.city;
+
+  cityElement.innerHTML = `${city}, ${country}`;
 }
 
 function setTodayTemperature(data) {
@@ -117,6 +126,7 @@ function setTodayIcon(data) {
 
 async function updateTemp() {
   const data = await getWeatherDataByInput();
+  setLocation(data);
   setDate(data);
   setTime(data);
   setTodayTemperature(data);
