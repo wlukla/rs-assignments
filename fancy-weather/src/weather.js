@@ -25,6 +25,14 @@ function getFeelsLikeCelsius(temp, hum) {
     + 0.00072546 * temp * hum ** 2 - 0.000003582 * temp ** 2 * hum ** 2);
 }
 
+function celsiusToFarenheit(temp) {
+  return Math.round((Number(temp) * (9 / 5)) + 32);
+}
+
+function farenheitToCelsius(temp) {
+  return Math.round((Number(temp) - 32) * (5 / 9));
+}
+
 async function getWeatherDataByInput() {
   const city = input.value;
   const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&APPID=${WEATHER_KEY}&units=metric`;
@@ -144,13 +152,59 @@ async function loadTemp(city) {
 }
 
 function toFarenheit() {
-  gradButtons[1].classList.remove('grad-switch-button__item_active');
-  gradButtons[0].classList.add('grad-switch-button__item_active');
+  if (gradButtons[1].classList.contains('grad-switch-button__item_active')) {
+    const todayTempCelsius = todayTempElement
+      .innerHTML
+      .slice(0, todayTempElement.innerHTML.length - 1);
+    const todayTempFarenheit = `${celsiusToFarenheit(todayTempCelsius)}°`;
+    todayTempElement.innerHTML = todayTempFarenheit;
+
+    const feelsLikeCelsius = feelsLikeElement
+      .innerHTML
+      .split(' ')[2]
+      .slice(0, feelsLikeElement.innerHTML.split(' ')[2].length - 1);
+    const feelsLikeFarenheit = `Feels like: ${celsiusToFarenheit(feelsLikeCelsius)}°`;
+    feelsLikeElement.innerHTML = feelsLikeFarenheit;
+
+    for (let i = 0; i < threeDaysTempElements.length; i += 1) {
+      const celsius = threeDaysTempElements[i]
+        .innerHTML
+        .slice(0, threeDaysTempElements[i].innerHTML.length - 1);
+      const farenheit = `${celsiusToFarenheit(celsius)}°`;
+      threeDaysTempElements[i].innerHTML = farenheit;
+    }
+
+    gradButtons[1].classList.remove('grad-switch-button__item_active');
+    gradButtons[0].classList.add('grad-switch-button__item_active');
+  }
 }
 
 function toCelsius() {
-  gradButtons[0].classList.remove('grad-switch-button__item_active');
-  gradButtons[1].classList.add('grad-switch-button__item_active');
+  if (gradButtons[0].classList.contains('grad-switch-button__item_active')) {
+    const todayTempFarenheit = todayTempElement
+      .innerHTML
+      .slice(0, todayTempElement.innerHTML.length - 1);
+    const todayTempCelsius = `${farenheitToCelsius(todayTempFarenheit)}°`;
+    todayTempElement.innerHTML = todayTempCelsius;
+
+    const feelsLikeFarenheit = feelsLikeElement
+      .innerHTML
+      .split(' ')[2]
+      .slice(0, feelsLikeElement.innerHTML.split(' ')[2].length - 1);
+    const feelsLikeCelsius = `Feels like: ${farenheitToCelsius(feelsLikeFarenheit)}°`;
+    feelsLikeElement.innerHTML = feelsLikeCelsius;
+
+    for (let i = 0; i < threeDaysTempElements.length; i += 1) {
+      const farenheit = threeDaysTempElements[i]
+        .innerHTML
+        .slice(0, threeDaysTempElements[i].innerHTML.length - 1);
+      const celsius = `${farenheitToCelsius(farenheit)}°`;
+      threeDaysTempElements[i].innerHTML = celsius;
+    }
+
+    gradButtons[0].classList.remove('grad-switch-button__item_active');
+    gradButtons[1].classList.add('grad-switch-button__item_active');
+  }
 }
 
 export {
