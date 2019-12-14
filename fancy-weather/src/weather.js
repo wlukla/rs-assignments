@@ -140,6 +140,7 @@ async function updateTemp() {
   setTodayTemperature(data);
   setThreeDaysTemperature(data);
   setTodayIcon(data);
+  return data;
 }
 
 async function loadTemp(city) {
@@ -149,6 +150,7 @@ async function loadTemp(city) {
   setTodayTemperature(data);
   setThreeDaysTemperature(data);
   setTodayIcon(data);
+  return data;
 }
 
 function toFarenheit() {
