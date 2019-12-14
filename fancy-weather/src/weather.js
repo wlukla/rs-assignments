@@ -27,14 +27,14 @@ function getFeelsLikeCelsius(temp, hum) {
 
 async function getWeatherDataByInput() {
   const city = input.value;
-  const url = `http://api.openweathermap.org/data/2.5/forecast?q=${city}&APPID=${WEATHER_KEY}&units=metric`;
+  const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&APPID=${WEATHER_KEY}&units=metric`;
 
   const data = await fetch(url).then((res) => res.json());
   return data;
 }
 
 async function getWeatherDataByUserPosition(city) {
-  const url = `http://api.openweathermap.org/data/2.5/forecast?q=${city}&APPID=${WEATHER_KEY}&units=metric`;
+  const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&APPID=${WEATHER_KEY}&units=metric`;
 
   const data = await fetch(url).then((res) => res.json());
   return data;
@@ -75,7 +75,7 @@ function setTime(data) {
 }
 
 function setDate(data) {
-  const date = `${new Date(data.list[0].dt)
+  const date = `${new Date(data.list[0].dt * 1000)
     .toString()
     .split(' ')
     .slice(0, 3)
