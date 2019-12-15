@@ -11,7 +11,7 @@ const timeElement = document.querySelector('.head__time');
 const dateElement = document.querySelector('.head__date');
 const threeDaysTempElements = document.querySelectorAll('.bottom__grad');
 const threeDaysDayElements = document.querySelectorAll('.day__name');
-const todayIconElement = document.querySelector('.current-weather__img');
+const todayIconElement = document.querySelector('.weather-info__img');
 const threeDaysIconElements = document.querySelectorAll('.bottom__img');
 const gradButtons = document.querySelectorAll('.grad-switch-button__item');
 

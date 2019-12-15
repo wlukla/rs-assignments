@@ -1,6 +1,7 @@
 * {
   margin: 0;
   padding: 0;
+  user-select: none;
 }
 
 body {
@@ -10,7 +11,8 @@ body {
 
 .wrapper {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
   padding: 40px 92px;
   width: 100vw;
   height: 100vh;
@@ -25,6 +27,8 @@ body {
 
 .left {
   width: 60%;
+  height: 100%;
+  max-width: 900px;
 }
 
 .button {
@@ -42,6 +46,8 @@ body {
   display: flex;
   justify-content: space-between;
   width: 30%;
+  max-width: 300px;
+  min-width: 250px;
   height: 44px;
 }
 
@@ -105,6 +111,10 @@ body {
   }
 }
 
+.today-weather-block {
+  max-width: 700px;
+}
+
 .head {
   margin-top: 70px;
 
@@ -120,22 +130,14 @@ body {
 }
 
 .current-weather {
-  position: relative;
-  width: 80%;
+  display: flex;
+  align-items: center;
+  width: 100%;
   padding-bottom: 40px;
   font-size: 200px;
-
-  &__img {
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
 }
 
 .weather-info {
-  position: absolute;
-  bottom: 80px;
-  right: 0;
   display: flex;
   flex-direction: column;
   font-size: 22px;
@@ -171,6 +173,7 @@ body {
   align-items: center;
   flex-direction: column;
   width: 40%;
+  max-width: 600px;
   height: 100%;
 }
 
@@ -231,4 +234,103 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+@media screen and (max-width: 1400px) {
+  .current-weather {
+    font-size: 150px;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .map,
+  .location {
+    display: none;
+  }
+
+  .geo-block {
+    width: 0;
+  }
+
+  .left {
+    width: 100%;
+  }
+
+  .search {
+    position: fixed;
+    right: 50px;
+    width: 300px;
+  }
+
+  .bottom {
+    &__grad {
+      font-size: 50px;
+    }
+
+    &__img {
+      width: 40px;
+      height: 40px;
+    }
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .wrapper {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+
+  .search {
+    position: relative;
+    width: 50vw;
+  }
+
+  .geo-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: fit-content;
+    margin-bottom: 20px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .wrapper {
+    padding-left: 20px;
+    padding-right: 20px;
+    align-items: center;
+  }
+
+  .left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .geo-block {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: fit-content;
+    margin-bottom: 20px;
+  }
+
+  .current-weather {
+    font-size: 100px;
+  }
+
+  .weather-info {
+    font-size: 15px;
+
+    &__img {
+      width: 100px;
+      height: 100px;
+    }
+  }
+
+  .search {
+    width: 100%;
+    margin-left: 100px;
+  }
 }
