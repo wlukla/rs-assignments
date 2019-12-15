@@ -1,4 +1,4 @@
-import { cityElement } from './location';
+import { cityElement, lonElement, latElement } from './location';
 
 const WEATHER_KEY = 'fb91c1e036059dcec537578ece8cdcf8';
 const input = document.querySelector('.search__input');
@@ -132,6 +132,12 @@ function setTodayIcon(data) {
   todayIconElement.src = weatherIconPath;
 }
 
+function setCoordinates(data) {
+  const { lat, lon } = data.city.coord;
+  lonElement.innerHTML = `Longitude: ${lon}`;
+  latElement.innerHTML = `Latitude: ${lat}`;
+}
+
 async function updateTemp() {
   const data = await getWeatherDataByInput();
   setLocation(data);
@@ -140,6 +146,7 @@ async function updateTemp() {
   setTodayTemperature(data);
   setThreeDaysTemperature(data);
   setTodayIcon(data);
+  setCoordinates(data)
   return data;
 }
 
@@ -150,6 +157,7 @@ async function loadTemp(city) {
   setTodayTemperature(data);
   setThreeDaysTemperature(data);
   setTodayIcon(data);
+  setCoordinates(data);
   return data;
 }
 
