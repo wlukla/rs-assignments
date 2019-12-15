@@ -3,14 +3,18 @@
   padding: 0;
 }
 
+body {
+  background-color: grey;
+  background-size: 100% 100%;
+}
+
 .wrapper {
   display: flex;
   justify-content: space-between;
   padding: 40px 92px;
   width: 100vw;
   height: 100vh;
-  background-color: grey;
-  background-size: 100% 100%;
+  background-color: rgba(0,0,0,0.5);
   box-sizing: border-box;
   font-family: 'Montserrat';
   font-style: normal;

@@ -115,7 +115,7 @@ function setThreeDaysIcons(weatherArr) {
 function setThreeDaysNames(data) {
   const todayDate = new Date().getDate();
   const weatherArr = data.list.filter((el) => {
-    const dayDate = Number(new Date(el.dt).getDate());
+    const dayDate = Number(new Date(el.dt * 1000).getDate());
     const dayHours = Number(el.dt_txt.slice(11, 13));
     return dayDate !== todayDate && dayHours === 15;
   });
@@ -152,8 +152,12 @@ function setTodayIcon(data) {
 
 function setCoordinates(data) {
   const { lat, lon } = data.city.coord;
-  lonElement.innerHTML = `Longitude: ${lon}`;
-  latElement.innerHTML = `Latitude: ${lat}`;
+
+  const lonWord = lonElement.innerHTML.split(' ')[0];
+  lonElement.innerHTML = `${lonWord} ${lon}`;
+
+  const latWord = latElement.innerHTML.split(' ')[0];
+  latElement.innerHTML = `${latWord} ${lat}`;
 }
 
 async function updateTemp() {

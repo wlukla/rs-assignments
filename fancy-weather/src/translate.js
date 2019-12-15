@@ -1,6 +1,7 @@
 import {
   feelsLikeElement, windElement, humidityElement, threeDaysDayElements,
 } from './weather';
+import { lonElement, latElement } from './location';
 
 const dropdownElement = document.querySelector('.lang-dropdown');
 const langElements = document.querySelectorAll('.lang-dropdown__item');
@@ -13,6 +14,8 @@ const dict = [
   ['Feels like:', 'Ощущается как:', 'Відчувається як:'],
   ['Wind:', 'Ветер:', 'Вітер:'],
   ['Humidity:', 'Влажность:', 'Вологість:'],
+  ['Longitude', 'Долгота:', 'Довгота:'],
+  ['Latitude:', 'Широта:', 'Широта:'],
 ];
 
 const dayDict = [
@@ -55,11 +58,17 @@ function changeElements(i) {
 
   for (let d = 0; d < threeDaysDayElements.length; d += 1) {
     for (let j = 0; j < dayDict.length; j += 1) {
-      if (threeDaysDayElements[d].innerHTML === dayDict[j][0]) {
+      if (dayDict[j].includes(threeDaysDayElements[d].innerHTML)) {
         threeDaysDayElements[d].innerHTML = dayDict[j][i];
       }
     }
   }
+
+  const lon = lonElement.innerHTML.split(' ')[1];
+  lonElement.innerHTML = `${dict[4][i]} ${lon}`;
+
+  const lat = latElement.innerHTML.split(' ')[1];
+  latElement.innerHTML = `${dict[5][i]} ${lat}`;
 }
 
 export {

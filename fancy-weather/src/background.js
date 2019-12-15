@@ -16,7 +16,7 @@ async function getLink() {
 }
 
 function setBackground(link) {
-  wrapperElement.style.backgroundImage = `url('${link}')`;
+  document.body.style.backgroundImage = `url('${link}')`;
 }
 
 async function updateBackground() {
