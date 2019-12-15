@@ -4,6 +4,7 @@ import * as Location from './location';
 import * as Weather from './weather';
 import * as Background from './background';
 import updateMap from './map';
+import * as VoiceInput from './voice-input';
 import './assets/img/weather-icons/id2.svg';
 import './assets/img/weather-icons/id3.svg';
 import './assets/img/weather-icons/id5.svg';
@@ -36,4 +37,8 @@ Weather.gradButtons[1].addEventListener('click', () => {
 
 Background.refreshButton.addEventListener('click', () => {
   Background.updateBackground();
+});
+
+VoiceInput.voiceInputElement.addEventListener('click', () => {
+  VoiceInput.startDicating();
 });

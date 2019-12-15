@@ -10,7 +10,7 @@ async function getLink() {
   const url = `https://api.unsplash.com/photos/random?query=city,${city}'&client_id=${UNSPLASH_KEY}`;
 
   const data = await fetch(url).then((res) => res.json());
-  const link = data.urls.small;
+  const link = data.urls.full;
 
   return link;
 }
