@@ -1,6 +1,5 @@
 import { cityElement } from './location';
 
-const wrapperElement = document.querySelector('.wrapper');
 const refreshButton = document.querySelector('.refresh-button');
 
 const UNSPLASH_KEY = '234ecb2a20225f9a826c1c7d1f299dad56d2b0c182718bfbcbe53102ab3b481b';
