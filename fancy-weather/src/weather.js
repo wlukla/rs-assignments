@@ -63,9 +63,15 @@ function setTodayTemperature(data) {
   const feelsLike = getFeelsLikeCelsius(temp, humidity / 100);
 
   todayTempElement.innerHTML = `${Math.round(temp)}°`;
-  feelsLikeElement.innerHTML = `Feels like: ${feelsLike}°`;
-  windElement.innerHTML = `Wind: ${wind} m/s`;
-  humidityElement.innerHTML = `Humidity: ${humidity}%`;
+
+  const wordFeelsLike = feelsLikeElement.innerHTML.split(':')[0];
+  feelsLikeElement.innerHTML = `${wordFeelsLike}: ${feelsLike}°`;
+
+  const wordWind = windElement.innerHTML.split(':')[0];
+  windElement.innerHTML = `${wordWind}: ${wind} m/s`;
+
+  const wordHumidity = humidityElement.innerHTML.split(':')[0];
+  humidityElement.innerHTML = `${wordHumidity}: ${humidity}%`;
 }
 
 function setTime(data) {
@@ -106,6 +112,21 @@ function setThreeDaysIcons(weatherArr) {
   }
 }
 
+function setThreeDaysNames(data) {
+  const todayDate = new Date().getDate();
+  const weatherArr = data.list.filter((el) => {
+    const dayDate = Number(new Date(el.dt).getDate());
+    const dayHours = Number(el.dt_txt.slice(11, 13));
+    return dayDate !== todayDate && dayHours === 15;
+  });
+
+  for (let i = 0; i < threeDaysTempElements.length; i += 1) {
+    threeDaysDayElements[i].innerHTML = `${new Date(weatherArr[i].dt * 1000)
+      .toString()
+      .slice(0, 3)}`;
+  }
+}
+
 function setThreeDaysTemperature(data) {
   const todayDate = new Date().getDate();
   const weatherArr = data.list.filter((el) => {
@@ -116,9 +137,6 @@ function setThreeDaysTemperature(data) {
 
   for (let i = 0; i < threeDaysTempElements.length; i += 1) {
     threeDaysTempElements[i].innerHTML = `${Math.round(weatherArr[i].main.temp)}°`;
-    threeDaysDayElements[i].innerHTML = `${new Date(weatherArr[i].dt * 1000)
-      .toString()
-      .slice(0, 3)}`;
   }
 
   setThreeDaysIcons(weatherArr);
@@ -156,6 +174,7 @@ async function loadTemp(city) {
   setDate(data);
   setTime(data);
   setTodayTemperature(data);
+  setThreeDaysNames(data);
   setThreeDaysTemperature(data);
   setTodayIcon(data);
   setCoordinates(data);
@@ -175,7 +194,8 @@ function toFarenheit() {
       .innerHTML
       .split(' ')[2]
       .slice(0, feelsLikeElement.innerHTML.split(' ')[2].length - 1);
-    const feelsLikeFarenheit = `Feels like: ${celsiusToFarenheit(feelsLikeCelsius)}°`;
+    const wordFeelsLike = feelsLikeElement.innerHTML.split(':')[0];
+    const feelsLikeFarenheit = `${wordFeelsLike}: ${celsiusToFarenheit(feelsLikeCelsius)}°`;
     feelsLikeElement.innerHTML = feelsLikeFarenheit;
 
     for (let i = 0; i < threeDaysTempElements.length; i += 1) {
@@ -203,7 +223,8 @@ function toCelsius() {
       .innerHTML
       .split(' ')[2]
       .slice(0, feelsLikeElement.innerHTML.split(' ')[2].length - 1);
-    const feelsLikeCelsius = `Feels like: ${farenheitToCelsius(feelsLikeFarenheit)}°`;
+    const wordFeelsLike = feelsLikeElement.innerHTML.split(':')[0];
+    const feelsLikeCelsius = `${wordFeelsLike}: ${farenheitToCelsius(feelsLikeFarenheit)}°`;
     feelsLikeElement.innerHTML = feelsLikeCelsius;
 
     for (let i = 0; i < threeDaysTempElements.length; i += 1) {
@@ -221,5 +242,5 @@ function toCelsius() {
 
 export {
   searchButton, updateTemp, loadTemp, gradButtons, toFarenheit, toCelsius, input,
-  feelsLikeElement, windElement, humidityElement,
+  feelsLikeElement, windElement, humidityElement, threeDaysDayElements,
 };

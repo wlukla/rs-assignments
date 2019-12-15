@@ -1,4 +1,6 @@
-import { feelsLikeElement, windElement, humidityElement } from './weather';
+import {
+  feelsLikeElement, windElement, humidityElement, threeDaysDayElements,
+} from './weather';
 
 const dropdownElement = document.querySelector('.lang-dropdown');
 const langElements = document.querySelectorAll('.lang-dropdown__item');
@@ -11,6 +13,16 @@ const dict = [
   ['Feels like:', 'Ощущается как:', 'Відчувається як:'],
   ['Wind:', 'Ветер:', 'Вітер:'],
   ['Humidity:', 'Влажность:', 'Вологість:'],
+];
+
+const dayDict = [
+  ['Mon', 'Пн', 'Пн'],
+  ['Tue', 'Вт', 'Вт'],
+  ['Wen', 'Ср', 'Ср'],
+  ['Thu', 'Чт', 'Чт'],
+  ['Fri', 'Пт', 'Пт'],
+  ['Sat', 'Сб', 'Сб'],
+  ['Sun', 'Вс', 'Нд'],
 ];
 
 function showHideDropdown() {
@@ -40,8 +52,17 @@ function changeElements(i) {
   const humidityElementText = humidityElement.innerHTML.split(':');
   humidityElementText[0] = dict[3][i];
   humidityElement.innerHTML = humidityElementText.join('');
+
+  for (let d = 0; d < threeDaysDayElements.length; d += 1) {
+    for (let j = 0; j < dayDict.length; j += 1) {
+      if (threeDaysDayElements[d].innerHTML === dayDict[j][0]) {
+        threeDaysDayElements[d].innerHTML = dayDict[j][i];
+      }
+    }
+  }
 }
 
 export {
   dropdownElement, showHideDropdown, langButton, changeCurrent, langElements, changeElements,
+  dayDict,
 };
