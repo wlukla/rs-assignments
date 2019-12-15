@@ -146,7 +146,8 @@ async function updateTemp() {
   setTodayTemperature(data);
   setThreeDaysTemperature(data);
   setTodayIcon(data);
-  setCoordinates(data)
+  setCoordinates(data);
+  input.value = '';
   return data;
 }
 
@@ -158,6 +159,7 @@ async function loadTemp(city) {
   setThreeDaysTemperature(data);
   setTodayIcon(data);
   setCoordinates(data);
+  input.value = '';
   return data;
 }
 
@@ -218,5 +220,6 @@ function toCelsius() {
 }
 
 export {
-  searchButton, updateTemp, loadTemp, gradButtons, toFarenheit, toCelsius,
+  searchButton, updateTemp, loadTemp, gradButtons, toFarenheit, toCelsius, input,
+  feelsLikeElement, windElement, humidityElement,
 };

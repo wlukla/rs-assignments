@@ -14,9 +14,16 @@
       <div class="refresh-button button">
         <img class="refresh-button__img" src="assets/img/refresh-icon.svg" alt="refresh icon">
       </div>
-      <div class="lang-switch-button button">
-        <span class="lang-switch-button__current-lang">EN</span>
-        <img class="lang-switch-button__img" src="assets/img/arrow-down.svg" alt="arrow down icon">
+      <div class="lang-switch-button">
+        <div class="current button">
+          <span class="current__lang">EN</span>
+          <img class="current__img" src="assets/img/arrow-down.svg" alt="arrow down icon">
+        </div>
+        <div class="lang-dropdown">
+          <span class="lang-dropdown__item">EN</span>
+          <span class="lang-dropdown__item">RU</span>
+          <span class="lang-dropdown__item">UA</span>
+        </div>
       </div>
       <div class="grad-switch-button button">
         <span class="grad-switch-button__item">°F</span>
@@ -25,9 +32,9 @@
     </div>
     <div class="today-weather-block">
       <div class="head">
-        <h2 class="head__city">Aaaaaa</h2>
-        <span class="head__date">aaaaa</span>
-        <span class="head__time">aaaa</span>
+        <h2 class="head__city"></h2>
+        <span class="head__date"></span>
+        <span class="head__time"></span>
       </div>
       <div class="current-weather">
         <h2 class="current-weather__grad">10°</h2>
@@ -36,7 +43,7 @@
           <span class="weather-info__heading weather-info__item">Overcast</span>
           <span class="weather-info__feels-like weather-info__item"></span>
           <span class="weather-info__wind weather-info__item"></span>
-          <span class="weather-info__humidity weather-info__item">aa</span>
+          <span class="weather-info__humidity weather-info__item"></span>
         </div>
       </div>
     </div>
@@ -74,8 +81,7 @@
       <div class="map">
         <iframe class="map__iframe"
         frameborder="0" style="border:0"
-        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDdVGeaV2xofDELkV8F_pIf2mz7m8h1-aY
-        &q=Space+Needle,Seattle+WA" allowfullscreen>
+        src="#" allowfullscreen>
         </iframe>
       </div>
       <span class="location__lon"></span>

@@ -45,9 +45,35 @@
   width: 44px;
 }
 
-.lang-switch-button {
+.current {
   justify-content: space-around;
   width: 72px;
+}
+
+.lang-dropdown {
+  position: relative;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  height: 300%;
+  background-color: red;
+  border-radius: 6px;
+  background-color: lightgrey;
+  opacity: 1;
+
+  &__item {
+    height: 44px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    cursor: pointer;
+  }
+}
+
+.lang-dropdown_active {
+  display: flex;
 }
 
 .grad-switch-button {
