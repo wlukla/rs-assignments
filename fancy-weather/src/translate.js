@@ -75,5 +75,5 @@ function changeElements(i) {
 
 export {
   dropdownElement, showHideDropdown, langButton, changeCurrent, langElements, changeElements,
-  dayDict,
+  dayDict, currentLangElement,
 };

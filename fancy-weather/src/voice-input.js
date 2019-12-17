@@ -1,3 +1,5 @@
+import { currentLangElement } from './translate';
+
 /* eslint-disable no-undef */
 /* eslint-disable new-cap */
 const voiceInputElement = document.querySelector('.search__icon');
@@ -8,7 +10,21 @@ function startDicating() {
   recognition.continuous = false;
   recognition.interimResults = false;
 
-  recognition.lang = 'en-US';
+  let lang = currentLangElement.innerHTML;
+  switch (lang) {
+    case 'EN':
+      lang = 'en-US';
+      break;
+    case 'RU':
+      lang = 'ru-RU';
+      break;
+    case 'UA':
+      lang = 'uk-UA';
+      break;
+    default:
+  }
+
+  recognition.lang = lang;
   recognition.start();
 
   recognition.onresult = (e) => {
