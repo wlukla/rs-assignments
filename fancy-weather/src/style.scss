@@ -49,6 +49,7 @@ body {
   max-width: 300px;
   min-width: 250px;
   height: 44px;
+  min-height: 44px;
 }
 
 .refresh-button {
@@ -149,6 +150,7 @@ body {
 }
 
 .three-days-block {
+  width: 100%;
   display: flex;
   justify-content: space-around;
 }
@@ -275,6 +277,10 @@ body {
 }
 
 @media screen and (max-width: 750px) {
+  .current-weather {
+    font-size: 100px;
+  }
+
   .wrapper {
     flex-direction: column-reverse;
     align-items: center;
@@ -316,8 +322,12 @@ body {
     margin-bottom: 20px;
   }
 
+
+
   .current-weather {
-    font-size: 100px;
+    justify-content: center;
+    align-items: center;
+    font-size: 90px;
   }
 
   .weather-info {
@@ -332,5 +342,63 @@ body {
   .search {
     width: 100%;
     margin-left: 100px;
+  }
+
+  .head {
+    margin-top: 20px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .today-weather-block {
+    width: 100%;
+  }
+
+  .current-weather {
+    justify-content: center;
+    align-items: center;
+    font-size: 66px;
+  }
+
+  .weather-info {
+    font-size: 14px;
+
+    &__img {
+      width: 50px;
+      height: 50px;
+    }
+
+    &__item {
+      margin-bottom: 4px;
+    }
+  }
+
+  .day {
+    &__name {
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+  }
+
+  .bottom {
+    &__grad {
+      font-size: 30px;
+    }
+
+    &__img {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .head {
+    &__city {
+      font-size: 30px;
+    }
+
+    &__date,
+    &__time {
+      font-size: 18px;
+    }
   }
 }
