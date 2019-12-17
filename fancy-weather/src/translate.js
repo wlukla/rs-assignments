@@ -69,6 +69,8 @@ function changeElements(i) {
 
   const lat = latElement.innerHTML.split(' ')[1];
   latElement.innerHTML = `${dict[5][i]} ${lat}`;
+
+  window.localStorage.setItem('lang', i);
 }
 
 export {

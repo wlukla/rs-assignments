@@ -212,6 +212,8 @@ function toFarenheit() {
 
     gradButtons[1].classList.remove('grad-switch-button__item_active');
     gradButtons[0].classList.add('grad-switch-button__item_active');
+
+    window.localStorage.setItem('grad', 'F');
   }
 }
 
@@ -241,6 +243,8 @@ function toCelsius() {
 
     gradButtons[0].classList.remove('grad-switch-button__item_active');
     gradButtons[1].classList.add('grad-switch-button__item_active');
+
+    window.localStorage.setItem('grad', 'C');
   }
 }
 

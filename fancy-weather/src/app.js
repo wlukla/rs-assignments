@@ -19,6 +19,18 @@ window.addEventListener('load', async () => {
   const city = Location.cityElement.innerHTML.replace(' ', '');
   const data = await Weather.loadTemp(city);
   Background.updateBackground();
+
+  if (window.localStorage.getItem('lang')) {
+    const lang = window.localStorage.getItem('lang');
+    Translate.changeCurrent(Translate.langElements[lang]);
+    Translate.changeElements(lang);
+    Translate.showHideDropdown();
+  }
+
+  const grad = window.localStorage.getItem('grad');
+  if (grad === 'F') {
+    Weather.toFarenheit();
+  }
   updateMap(data);
 });
 
