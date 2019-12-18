@@ -81,10 +81,14 @@ function setTime(data) {
   const { timezone } = data.city;
   const date = new Date();
   let hours = date.getUTCHours() + timezone / 60 / 60;
-  const minutes = date.getUTCMinutes();
+  let minutes = date.getUTCMinutes();
 
   if (hours > 23) {
     hours -= 24;
+  }
+
+  if (minutes < 10) {
+    minutes = `0${minutes}`;
   }
 
   const time = `${hours}:${minutes}`;

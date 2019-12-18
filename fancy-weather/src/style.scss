@@ -45,6 +45,11 @@ body {
   cursor: pointer;
 }
 
+.button:hover {
+  background-color: rgba(174, 181, 185, 0.8);
+  transition: 0.4s;
+}
+
 .control-block {
   display: flex;
   justify-content: space-between;
@@ -83,6 +88,11 @@ body {
     align-items: center;
     color: black;
     cursor: pointer;
+  }
+
+  &__item:hover {
+    background-color: #ffffff;
+    border-radius: 6px;
   }
 }
 
@@ -138,7 +148,7 @@ body {
   align-items: center;
   width: 100%;
   padding-bottom: 40px;
-  font-size: 200px;
+  font-size: 170px;
 }
 
 .weather-info {
@@ -205,6 +215,7 @@ body {
 
   &__icon {
     margin-right: 10px;
+    cursor: pointer;
   }
 
   &__button {
@@ -217,7 +228,18 @@ body {
     background-color:  rgba(72, 72, 72, 0.1);
     font-size: 16px;
     outline: none;
+    cursor: pointer;
   }
+
+  &__button:hover {
+    color: #FFFFFF;
+    background-color:  rgba(72, 72, 72, 0.3);
+    transition: 0.5s;
+  }
+}
+
+.search:hover {
+  box-shadow: 3px 3px 20px 0px rgba(0,0,0,0.75);
 }
 
 .map {

@@ -53,6 +53,7 @@ Weather.searchButton.addEventListener('click', async () => {
   const data = await Weather.updateTemp(city);
   Background.updateBackground();
   updateMap(data);
+  Translate.translateDate();
   Translate.translateCity();
 });
 
