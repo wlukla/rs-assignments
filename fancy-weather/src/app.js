@@ -39,7 +39,8 @@ window.addEventListener('load', async () => {
 window.addEventListener('keydown', async (e) => {
   if (document.activeElement === Weather.input
     && e.key === 'Enter') {
-    const data = await Weather.updateTemp();
+    const city = await Translate.getCityName();
+    const data = await Weather.updateTemp(city);
     Background.updateBackground();
     updateMap(data);
     Translate.translateDate();
@@ -48,7 +49,8 @@ window.addEventListener('keydown', async (e) => {
 });
 
 Weather.searchButton.addEventListener('click', async () => {
-  const data = await Weather.updateTemp();
+  const city = await Translate.getCityName();
+  const data = await Weather.updateTemp(city);
   Background.updateBackground();
   updateMap(data);
   Translate.translateCity();

@@ -1,5 +1,5 @@
 import {
-  feelsLikeElement, windElement, humidityElement, threeDaysDayElements, dateElement,
+  feelsLikeElement, windElement, humidityElement, threeDaysDayElements, dateElement, input,
 } from './weather';
 import { lonElement, latElement, cityElement } from './location';
 
@@ -125,7 +125,14 @@ function translateDate() {
   dateElement.innerHTML = dateArr.join(' ');
 }
 
+async function getCityName() {
+  const city = input.value.replace(' ', ',');
+  const url = `https://api.opencagedata.com/geocode/v1/json?key=${TRANSLATE_KEY}&q=${city}`;
+  const data = await fetch(url).then((res) => res.json());
+  return data.results[0].components.city;
+}
+
 export {
   dropdownElement, showHideDropdown, langButton, changeCurrent, langElements, changeElements,
-  dayDict, currentLangElement, translateCity, translateDate,
+  dayDict, currentLangElement, translateCity, translateDate, getCityName,
 };

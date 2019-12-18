@@ -33,8 +33,11 @@ function farenheitToCelsius(temp) {
   return Math.round((Number(temp) - 32) * (5 / 9));
 }
 
-async function getWeatherDataByInput() {
-  const city = input.value;
+async function getWeatherDataByCity(c) {
+  let city = input.value;
+  if (c) {
+    city = c;
+  }
   const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&APPID=${WEATHER_KEY}&units=metric`;
 
   const data = await fetch(url).then((res) => res.json());
@@ -160,8 +163,8 @@ function setCoordinates(data) {
   latElement.innerHTML = `${latWord} ${lat}`;
 }
 
-async function updateTemp() {
-  const data = await getWeatherDataByInput();
+async function updateTemp(city) {
+  const data = await getWeatherDataByCity(city);
   setLocation(data);
   setDate(data);
   setTime(data);
