@@ -25,6 +25,7 @@ window.addEventListener('load', async () => {
     Translate.changeCurrent(Translate.langElements[lang]);
     Translate.changeElements(lang);
     Translate.showHideDropdown();
+    Translate.translateCity();
   }
 
   const grad = window.localStorage.getItem('grad');
@@ -38,8 +39,9 @@ window.addEventListener('keydown', async (e) => {
   if (document.activeElement === Weather.input
     && e.key === 'Enter') {
     const data = await Weather.updateTemp();
-    Background.updateBackground();
-    updateMap(data);
+    await Background.updateBackground();
+    await updateMap(data);
+    Translate.translateCity();
   }
 });
 
@@ -47,6 +49,7 @@ Weather.searchButton.addEventListener('click', async () => {
   const data = await Weather.updateTemp();
   Background.updateBackground();
   updateMap(data);
+  Translate.translateCity();
 });
 
 Weather.gradButtons[0].addEventListener('click', () => {
@@ -72,14 +75,17 @@ Translate.langButton.addEventListener('click', () => {
 Translate.langElements[0].addEventListener('click', () => {
   Translate.changeCurrent(Translate.langElements[0]);
   Translate.changeElements(0);
+  Translate.translateCity();
 });
 
 Translate.langElements[1].addEventListener('click', () => {
   Translate.changeCurrent(Translate.langElements[1]);
   Translate.changeElements(1);
+  Translate.translateCity();
 });
 
 Translate.langElements[2].addEventListener('click', () => {
   Translate.changeCurrent(Translate.langElements[2]);
   Translate.changeElements(2);
+  Translate.translateCity();
 });

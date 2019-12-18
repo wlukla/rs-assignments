@@ -1,13 +1,14 @@
 import {
   feelsLikeElement, windElement, humidityElement, threeDaysDayElements, dateElement,
 } from './weather';
-import { lonElement, latElement } from './location';
+import { lonElement, latElement, cityElement } from './location';
 
 const dropdownElement = document.querySelector('.lang-dropdown');
 const langElements = document.querySelectorAll('.lang-dropdown__item');
 const langButton = document.querySelector('.current');
 const currentLangElement = document.querySelector('.current__lang');
 const headingElement = document.querySelector('.weather-info__heading');
+const TRANSLATE_KEY = '32ced2e24bb04d0380649acdc1688faa';
 
 const dict = [
   ['Overcast', 'Прогноз', 'Прогноз'],
@@ -43,6 +44,10 @@ const monthDict = [
   ['Dec', 'Дек', 'Груд'],
 ];
 
+const langArr = [
+  'en-US', 'ru-RU', 'uk-UA',
+];
+
 function showHideDropdown() {
   if (dropdownElement.classList.contains('lang-dropdown_active')) {
     dropdownElement.classList.remove('lang-dropdown_active');
@@ -56,7 +61,14 @@ function changeCurrent(elem) {
   showHideDropdown();
 }
 
-function changeElements(i) {
+function getCityData(lang) {
+  const city = cityElement.innerHTML.split(', ')[0];
+  const url = `https://api.opencagedata.com/geocode/v1/json?key=${TRANSLATE_KEY}&q=${city}&language=${lang}`;
+  const data = fetch(url).then((res) => res.json());
+  return data;
+}
+
+async function changeElements(i) {
   const dateArr = dateElement.innerHTML.split(' ');
 
   for (let j = 0; j < dayDict.length; j += 1) {
@@ -104,7 +116,13 @@ function changeElements(i) {
   window.localStorage.setItem('lang', i);
 }
 
+async function translateCity() {
+  const langIndex = window.localStorage.getItem('lang');
+  const data = await getCityData(langArr[langIndex]);
+  cityElement.innerHTML = data.results[0].formatted;
+}
+
 export {
   dropdownElement, showHideDropdown, langButton, changeCurrent, langElements, changeElements,
-  dayDict, currentLangElement,
+  dayDict, currentLangElement, translateCity,
 };
