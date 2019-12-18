@@ -29,6 +29,8 @@ window.addEventListener('load', async () => {
     Translate.showHideDropdown();
     Translate.translateDate();
     Translate.translateCity();
+  } else {
+    Translate.changeElements(0);
   }
 
   const grad = window.localStorage.getItem('grad');
