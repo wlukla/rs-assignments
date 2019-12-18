@@ -212,3 +212,5 @@ export default function render() {
   locationLat.classList.add('location__lat');
   location.appendChild(locationLat);
 }
+
+render();
