@@ -27,4 +27,6 @@ async function setUserPosition() {
   setCity(data);
 }
 
-export { setUserPosition, cityElement, latElement, lonElement };
+export {
+  setUserPosition, cityElement, latElement, lonElement,
+};
