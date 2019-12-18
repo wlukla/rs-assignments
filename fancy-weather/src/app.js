@@ -1,3 +1,4 @@
+import './render';
 import 'normalize.css';
 import './style.scss';
 import * as Location from './location';
@@ -6,6 +7,7 @@ import * as Background from './background';
 import updateMap from './map';
 import * as VoiceInput from './voice-input';
 import * as Translate from './translate';
+
 import './assets/img/weather-icons/id2.svg';
 import './assets/img/weather-icons/id3.svg';
 import './assets/img/weather-icons/id5.svg';
