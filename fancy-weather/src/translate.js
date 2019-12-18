@@ -69,22 +69,6 @@ function getCityData(lang) {
 }
 
 async function changeElements(i) {
-  const dateArr = dateElement.innerHTML.split(' ');
-
-  for (let j = 0; j < dayDict.length; j += 1) {
-    if (dayDict[j].includes(dateArr[0])) {
-      dateArr[0] = dayDict[j][i];
-    }
-  }
-
-  for (let j = 0; j < monthDict.length; j += 1) {
-    if (monthDict[j].includes(dateArr[1])) {
-      dateArr[1] = monthDict[j][i];
-    }
-  }
-
-  dateElement.innerHTML = dateArr.join(' ');
-
   headingElement.innerHTML = dict[0][i];
 
   const feelsLikeElementText = feelsLikeElement.innerHTML.split(':');
@@ -122,7 +106,26 @@ async function translateCity() {
   cityElement.innerHTML = data.results[0].formatted;
 }
 
+function translateDate() {
+  const langIndex = window.localStorage.getItem('lang');
+  const dateArr = dateElement.innerHTML.split(' ');
+
+  for (let j = 0; j < dayDict.length; j += 1) {
+    if (dayDict[j].includes(dateArr[0])) {
+      dateArr[0] = dayDict[j][langIndex];
+    }
+  }
+
+  for (let j = 0; j < monthDict.length; j += 1) {
+    if (monthDict[j].includes(dateArr[1])) {
+      dateArr[1] = monthDict[j][langIndex];
+    }
+  }
+
+  dateElement.innerHTML = dateArr.join(' ');
+}
+
 export {
   dropdownElement, showHideDropdown, langButton, changeCurrent, langElements, changeElements,
-  dayDict, currentLangElement, translateCity,
+  dayDict, currentLangElement, translateCity, translateDate,
 };
