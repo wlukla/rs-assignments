@@ -250,5 +250,5 @@ function toCelsius() {
 
 export {
   searchButton, updateTemp, loadTemp, gradButtons, toFarenheit, toCelsius, input,
-  feelsLikeElement, windElement, humidityElement, threeDaysDayElements,
+  feelsLikeElement, windElement, humidityElement, threeDaysDayElements, dateElement,
 };

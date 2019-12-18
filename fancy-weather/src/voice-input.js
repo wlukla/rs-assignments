@@ -1,10 +1,12 @@
 import { currentLangElement } from './translate';
+import { input } from './weather';
 
 /* eslint-disable no-undef */
 /* eslint-disable new-cap */
 const voiceInputElement = document.querySelector('.search__icon');
 
 function startDicating() {
+  input.innerHTML = '';
   const recognition = new webkitSpeechRecognition();
 
   recognition.continuous = false;

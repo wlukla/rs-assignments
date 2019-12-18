@@ -1,5 +1,5 @@
 import {
-  feelsLikeElement, windElement, humidityElement, threeDaysDayElements,
+  feelsLikeElement, windElement, humidityElement, threeDaysDayElements, dateElement,
 } from './weather';
 import { lonElement, latElement } from './location';
 
@@ -28,6 +28,21 @@ const dayDict = [
   ['Sun', 'Вс', 'Нд'],
 ];
 
+const monthDict = [
+  ['Jan', 'Янв', 'Січ'],
+  ['Feb', 'Фев', 'Лют'],
+  ['Mar', 'Мар', 'Бер'],
+  ['Apr', 'Апр', 'Кві'],
+  ['May', 'Май', 'Тра'],
+  ['Jun', 'Июнь', 'Чер'],
+  ['Jul', 'Июль', 'Лип'],
+  ['Aug', 'Авг', 'Сер'],
+  ['Sep', 'Сен', 'Вер'],
+  ['Oct', 'Окт', 'Жов'],
+  ['Nov', 'Ноя', 'Лис'],
+  ['Dec', 'Дек', 'Груд'],
+];
+
 function showHideDropdown() {
   if (dropdownElement.classList.contains('lang-dropdown_active')) {
     dropdownElement.classList.remove('lang-dropdown_active');
@@ -42,6 +57,22 @@ function changeCurrent(elem) {
 }
 
 function changeElements(i) {
+  const dateArr = dateElement.innerHTML.split(' ');
+
+  for (let j = 0; j < dayDict.length; j += 1) {
+    if (dayDict[j].includes(dateArr[0])) {
+      dateArr[0] = dayDict[j][i];
+    }
+  }
+
+  for (let j = 0; j < monthDict.length; j += 1) {
+    if (monthDict[j].includes(dateArr[1])) {
+      dateArr[1] = monthDict[j][i];
+    }
+  }
+
+  dateElement.innerHTML = dateArr.join(' ');
+
   headingElement.innerHTML = dict[0][i];
 
   const feelsLikeElementText = feelsLikeElement.innerHTML.split(':');

@@ -26,6 +26,9 @@ body {
 }
 
 .left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   width: 60%;
   height: 100%;
   max-width: 900px;
@@ -150,6 +153,7 @@ body {
 }
 
 .three-days-block {
+  margin-bottom: 20px;
   width: 100%;
   display: flex;
   justify-content: space-around;
