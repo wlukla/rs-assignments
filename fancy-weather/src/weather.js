@@ -137,7 +137,7 @@ function setThreeDaysNames(data) {
 function setThreeDaysTemperature(data) {
   const todayDate = new Date().getDate();
   const weatherArr = data.list.filter((el) => {
-    const dayDate = Number(new Date(el.dt).getDate());
+    const dayDate = Number(new Date(el.dt * 1000).getDate());
     const dayHours = Number(el.dt_txt.slice(11, 13));
     return dayDate !== todayDate && dayHours === 15;
   });
