@@ -82,11 +82,6 @@
   }
 
   &__tool {
-    &_disabled {
-      opacity: 0.2;
-      cursor: default;
-    }
-
     &_selected {
       background-color: lightgrey;
     }
@@ -172,6 +167,7 @@
 }
 
 .canvas-container {
+  margin-top: 5%;
   width: fit-content;
   height: 100%;
   display: flex;

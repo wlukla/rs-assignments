@@ -5,8 +5,6 @@ import * as Netlify from './netlify';
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 let ctxScale = 1;
-let data = '';
-let hasImage = false;
 
 const colorSwitcher = document.querySelector('.color__icon_current');
 const prevColor = document.querySelector('.color__icon_prev');
@@ -15,14 +13,12 @@ const blue = document.querySelector('.color__icon_blue');
 let lastColor = colorSwitcher.value;
 
 const toolButtons = document.querySelectorAll('.sheet__tool');
-const [fill, pick, pencil] = toolButtons;
+const [fill, pick, pencil, eraser] = toolButtons;
 let instrument = null;
 let isDrawing = false;
 
-const input = document.querySelector('.form__text-input');
-
 const sizeButtons = document.querySelectorAll('.sheet__size-switcher');
-const [size128Button, size256Button, size512Button] = sizeButtons;
+const [size128Button, size64Button, size32Button] = sizeButtons;
 
 // disable smoothing
 ctx.msImageSmoothingEnabled = false;
@@ -52,12 +48,8 @@ window.onload = () => {
 
   // updating everything from storage
   if (localStorage.getItem('data') !== null) {
-    hasImage = true;
     // setting last color
     colorSwitcher.value = window.localStorage.getItem('color');
-
-    // setting link to image
-    data = window.localStorage.getItem('lastImg');
 
     // drawing canvas
     const oldImg = new Image();
@@ -65,15 +57,14 @@ window.onload = () => {
     oldImg.onload = async () => {
       ctxScale = +localStorage.getItem('scale');
       ctx.drawImage(oldImg, 0, 0);
-      // highliting last canvas size
-      if (ctxScale === 1) {
-        makeActive(size512Button);
-      } else if (ctxScale === 2) {
-        makeActive(size256Button);
-      } else if (ctxScale === 4) {
-        makeActive(size128Button);
-      }
     };
+    if (ctxScale === 4) {
+      makeActive(size128Button);
+    } else if (ctxScale === 8) {
+      makeActive(size64Button);
+    } else if (ctxScale === 16) {
+      makeActive(size32Button);
+    }
   } else {
     // seting canvas size to 128x128
     changeScale(4);
@@ -86,8 +77,6 @@ function saveCtx() {
 }
 
 document.addEventListener('click', (e) => {
-  // rewrite with make active
-
   if (e.path.includes(pencil)) {
     instrument = 2;
     makeActive(pencil);
@@ -97,6 +86,9 @@ document.addEventListener('click', (e) => {
   } else if (e.path.includes(pick)) {
     instrument = 1;
     makeActive(pick);
+  } else if (e.path.includes(eraser)) {
+    instrument = 3;
+    makeActive(eraser);
   }
 });
 
@@ -104,12 +96,20 @@ function drawPixel(e) {
   const startX = Math.floor(e.offsetX / ctxScale) * ctxScale;
   const startY = Math.floor(e.offsetY / ctxScale) * ctxScale;
   ctx.fillStyle = colorSwitcher.value;
-  ctx.fillRect(startX, startY, ctxScale, ctxScale);
+  ctx.clearRect(startX, startY, ctxScale, ctxScale);
+}
+
+function erasePixel(e) {
+  const x = Math.floor(e.offsetX / ctxScale) * ctxScale;
+  const y = Math.floor(e.offsetY / ctxScale) * ctxScale;
+  ctx.clearRect(x, y, ctxScale, ctxScale);
 }
 
 canvas.addEventListener('click', (e) => {
   if (instrument === 2) {
     drawPixel(e);
+  } else if (instrument === 3) {
+    erasePixel(e);
   }
   saveCtx();
 });
@@ -134,14 +134,17 @@ document.addEventListener('click', (e) => {
 });
 
 canvas.addEventListener('mousedown', (e) => {
+  isDrawing = true;
+
   if (instrument === 2) {
-    isDrawing = true;
     drawPixel(e);
+  } else if (instrument === 3) {
+    erasePixel(e);
   }
 });
 
 canvas.addEventListener('mouseout', () => {
-  if (instrument === 2) {
+  if (instrument === 2 || instrument === 3) {
     isDrawing = false;
   }
   saveCtx();
@@ -150,11 +153,13 @@ canvas.addEventListener('mouseout', () => {
 canvas.addEventListener('mousemove', (e) => {
   if (instrument === 2 && isDrawing) {
     drawPixel(e);
+  } else if (instrument === 3 && isDrawing) {
+    erasePixel(e);
   }
 });
 
 canvas.addEventListener('mouseup', () => {
-  if (instrument === 2) {
+  if (instrument === 2 || instrument === 3) {
     isDrawing = false;
   }
 });
@@ -183,144 +188,22 @@ colorSwitcher.addEventListener('change', () => {
   window.localStorage.setItem('color', lastColor);
 });
 
-// unsplash.com access key
-const key = '234ecb2a20225f9a826c1c7d1f299dad56d2b0c182718bfbcbe53102ab3b481b';
-
-function getLinkToImage() {
-  const city = input.value;
-  let url = ['https://api.unsplash.com/photos/random?=&client_id=', key].join('');
-
-  if (city) {
-    // update request if city is defined
-    url = ['https://api.unsplash.com/photos/random?query=town,', city, '&client_id=', key].join('');
-  }
-
-  async function getLink(req) {
-    const response = await fetch(req);
-    const json = await response.json();
-    const link = json.urls.small;
-    return link;
-  }
-
-  return getLink(url);
-}
-
-function addImage(img) {
-  const pixelSize = ctxScale;
-  let startX = 0;
-  let startY = 0;
-  const canvasSize = 512;
-  let ws = 0;
-  let hs = 0;
-
-  // resize image to fill whole canvas
-  if (img.width > img.height) {
-    hs = (img.height / img.width) * canvasSize;
-    ws = canvasSize;
-    startY = (canvasSize - hs) / 2;
-  } else if (img.height > img.width) {
-    ws = (img.width / img.height) * canvasSize;
-    hs = canvasSize;
-    startX = (canvasSize - ws) / 2;
-  } else {
-    ws = canvasSize / pixelSize;
-    hs = canvasSize / pixelSize;
-  }
-
-  const w = ws / pixelSize;
-  const h = hs / pixelSize;
-
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  // draw small image on canvas
-  ctx.drawImage(img, startX, startY, w, h);
-  // store canvas
-  const smallImg = new Image();
-  smallImg.src = canvas.toDataURL();
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  smallImg.onload = () => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // draw small image on whole canvas
-    ctx.drawImage(smallImg, startX, startY, w, h, startX, startY, ws, hs);
-    saveCtx();
-    hasImage = true;
-  };
-}
-
-function displayImage(link) {
-  window.localStorage.setItem('lastImg', link);
-
-  const img = new Image();
-
-  img.onload = () => {
-    addImage(img);
-    saveCtx();
-  };
-
-  img.crossOrigin = 'anonymous';
-  img.src = link;
-}
-
-const loadButton = document.querySelector('.form__load');
-
-loadButton.addEventListener('click', async () => {
-  data = await getLinkToImage();
-  displayImage(data);
-});
-
-// greyscale
-function toGrey() {
-  const [width, height] = [canvas.width, canvas.height];
-  // getting pixels array from canvas
-  const imgPixels = ctx.getImageData(0, 0, width, height);
-
-  for (let y = 0; y < height; y += 1) {
-    for (let x = 0; x < width; x += 1) {
-      const i = (y * 4) * width + x * 4;
-      const avg = (imgPixels.data[i] + imgPixels.data[i + 1] + imgPixels.data[i + 2]) / 3;
-      imgPixels.data[i] = avg;
-      imgPixels.data[i + 1] = avg;
-      imgPixels.data[i + 2] = avg;
-    }
-  }
-
-  ctx.putImageData(imgPixels, 0, 0, 0, 0, imgPixels.width, imgPixels.height);
-}
-
-
-const BWButton = document.querySelector('.form__bw');
-BWButton.addEventListener('click', () => {
-  if (hasImage) {
-    toGrey();
-  } else {
-    alert('Load image first');
-  }
-});
-
 size128Button.addEventListener('click', () => {
   makeActive(size128Button);
   changeScale(4);
-  displayImage(data);
   saveCtx();
 });
 
-size256Button.addEventListener('click', () => {
-  makeActive(size256Button);
-  changeScale(2);
-  displayImage(data);
+size64Button.addEventListener('click', () => {
+  makeActive(size64Button);
+  changeScale(8);
   saveCtx();
 });
 
-size512Button.addEventListener('click', () => {
-  makeActive(size512Button);
-  changeScale(1);
-  displayImage(data);
+size32Button.addEventListener('click', () => {
+  makeActive(size32Button);
+  changeScale(16);
   saveCtx();
-});
-
-// prevent form from reloading
-const form = document.querySelector('.form');
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
 });
 
 // github authorization
