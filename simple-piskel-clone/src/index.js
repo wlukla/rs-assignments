@@ -17,6 +17,10 @@ const [fill, pick, pencil, eraser] = toolButtons;
 let instrument = null;
 let isDrawing = false;
 
+const penSizesContainer = document.querySelector('.pen-sizes');
+const penSizesElements = document.querySelectorAll('.pen-sizes__item');
+let penSize = 1;
+
 const sizeButtons = document.querySelectorAll('.sheet__size-switcher');
 const [size128Button, size64Button, size32Button] = sizeButtons;
 
@@ -46,18 +50,16 @@ window.onload = () => {
   toolButtons.forEach((el) => el.classList.remove('sheet__tool_selected'));
   pencil.classList.add('sheet__tool_selected');
 
-  // updating everything from storage
   if (localStorage.getItem('data') !== null) {
-    // setting last color
     colorSwitcher.value = window.localStorage.getItem('color');
 
-    // drawing canvas
     const oldImg = new Image();
     oldImg.src = localStorage.getItem('data');
     oldImg.onload = async () => {
       ctxScale = +localStorage.getItem('scale');
       ctx.drawImage(oldImg, 0, 0);
     };
+
     if (ctxScale === 4) {
       makeActive(size128Button);
     } else if (ctxScale === 8) {
@@ -66,7 +68,6 @@ window.onload = () => {
       makeActive(size32Button);
     }
   } else {
-    // seting canvas size to 128x128
     changeScale(4);
   }
 };
@@ -90,19 +91,26 @@ document.addEventListener('click', (e) => {
     instrument = 3;
     makeActive(eraser);
   }
+
+  if (e.path.includes(penSizesContainer)) {
+    if ([...penSizesElements].indexOf(e.target) !== -1) {
+      const current = e.target;
+      penSize = ([...penSizesElements].indexOf(current) + 1) * ctxScale;
+    }
+  }
 });
 
 function drawPixel(e) {
   const startX = Math.floor(e.offsetX / ctxScale) * ctxScale;
   const startY = Math.floor(e.offsetY / ctxScale) * ctxScale;
   ctx.fillStyle = colorSwitcher.value;
-  ctx.clearRect(startX, startY, ctxScale, ctxScale);
+  ctx.fillRect(startX, startY, penSize, penSize);
 }
 
 function erasePixel(e) {
   const x = Math.floor(e.offsetX / ctxScale) * ctxScale;
   const y = Math.floor(e.offsetY / ctxScale) * ctxScale;
-  ctx.clearRect(x, y, ctxScale, ctxScale);
+  ctx.clearRect(x, y, penSize, penSize);
 }
 
 canvas.addEventListener('click', (e) => {
