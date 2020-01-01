@@ -3,11 +3,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: 'development',
-  entry: {
-    app: './src/app.js',
+  entry:{
+    app: './src/index.js',
   },
   output: {
-    filename: 'app.js',
+    filename: 'index.js',
     path: path.resolve(__dirname, 'dist'),
   },
   devServer: {
@@ -22,26 +22,21 @@ module.exports = {
         use: {
           loader: 'html-loader',
           options: { minimize: false },
-        },
+        }
       },
       {
-        test: /\.(s*)css$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
+        test:/\.(s*)css$/,
+        use:['style-loader','css-loader', 'sass-loader']
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
         use: [{
-          loader: 'file-loader',
+          loader: 'url-loader',
           options: {
             limit: 8000, // Convert images < 8kb to base64 strings
-            name: 'assets/img/[name].[ext]',
-          },
-        }],
-      },
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: 'babel-loader',
+            name: 'assets/img/[hash]-[name].[ext]'
+          }
+        }]
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
@@ -54,7 +49,8 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/index.html',
-      filename: './index.html',
-    }),
-  ],
+      filename: './index.html'
+    })
+  ]
+
 };
