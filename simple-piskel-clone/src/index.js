@@ -4,7 +4,7 @@ import * as Netlify from './netlify';
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
-let ctxScale = 1;
+let ctxScale = 4;
 
 const colorSwitcher = document.querySelector('.color__icon_current');
 const prevColor = document.querySelector('.color__icon_prev');
@@ -13,16 +13,23 @@ const blue = document.querySelector('.color__icon_blue');
 let lastColor = colorSwitcher.value;
 
 const toolButtons = document.querySelectorAll('.sheet__tool');
-const [fill, pick, pencil, eraser] = toolButtons;
+const [fill, pick, pencil, eraser, stroke] = toolButtons;
 let instrument = null;
 let isDrawing = false;
 
 const penSizesContainer = document.querySelector('.pen-sizes');
 const penSizesElements = document.querySelectorAll('.pen-sizes__item');
-let penSize = 1;
+let penSize = ctxScale;
 
 const sizeButtons = document.querySelectorAll('.sheet__size-switcher');
 const [size128Button, size64Button, size32Button] = sizeButtons;
+
+const strokeData = {
+  x1: null,
+  y1: null,
+  x2: null,
+  y2: null,
+};
 
 // disable smoothing
 ctx.msImageSmoothingEnabled = false;
@@ -90,6 +97,9 @@ document.addEventListener('click', (e) => {
   } else if (e.path.includes(eraser)) {
     instrument = 3;
     makeActive(eraser);
+  } else if (e.path.includes(stroke)) {
+    instrument = 4;
+    makeActive(stroke);
   }
 
   if (e.path.includes(penSizesContainer)) {
@@ -113,14 +123,79 @@ function erasePixel(e) {
   ctx.clearRect(x, y, penSize, penSize);
 }
 
-canvas.addEventListener('click', (e) => {
-  if (instrument === 2) {
-    drawPixel(e);
-  } else if (instrument === 3) {
-    erasePixel(e);
+function fillArea(startX, startY) {
+  const colorLayer = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const pixelStack = [[startX, startY]];
+  const initialPos = (startY * 4) * canvas.width + startX * 4;
+  const startR = colorLayer.data[initialPos];
+  const startG = colorLayer.data[initialPos + 1];
+  const startB = colorLayer.data[initialPos + 2];
+
+  const fillColorR = parseInt(colorSwitcher.value.slice(1, 3), 16);
+  const fillColorG = parseInt(colorSwitcher.value.slice(3, 5), 16);
+  const fillColorB = parseInt(colorSwitcher.value.slice(5, 7), 16);
+
+  function matchStartColor(pixelPos) {
+    const r = colorLayer.data[pixelPos];
+    const g = colorLayer.data[pixelPos + 1];
+    const b = colorLayer.data[pixelPos + 2];
+
+    return (r === startR && g === startG && b === startB);
   }
-  saveCtx();
-});
+
+  function colorPixel(pixelPos) {
+    colorLayer.data[pixelPos] = fillColorR;
+    colorLayer.data[pixelPos + 1] = fillColorG;
+    colorLayer.data[pixelPos + 2] = fillColorB;
+    colorLayer.data[pixelPos + 3] = 255;
+  }
+
+  while (pixelStack.length) {
+    let reachLeft = false;
+    let reachRight = false;
+    const drawingBoundTop = 0;
+    const newPos = pixelStack.pop();
+    const x = newPos[0];
+    let y = newPos[1];
+    let pixelPos = (y * canvas.width + x) * 4;
+    pixelPos = (y * canvas.width + x) * 4;
+    while (y - 1 >= drawingBoundTop && matchStartColor(pixelPos)) {
+      y -= 1;
+      pixelPos -= canvas.width * 4;
+    }
+    pixelPos += canvas.width * 4;
+    y += 1;
+    while ((y + 1) < canvas.height - 1 && matchStartColor(pixelPos)) {
+      y += 1;
+      colorPixel(pixelPos);
+
+      if (x > 0) {
+        if (matchStartColor(pixelPos - 4)) {
+          if (!reachLeft) {
+            pixelStack.push([x - 1, y]);
+            reachLeft = true;
+          }
+        } else if (reachLeft) {
+          reachLeft = false;
+        }
+      }
+
+      if (x < canvas.width - 1) {
+        if (matchStartColor(pixelPos + 4)) {
+          if (!reachRight) {
+            pixelStack.push([x + 1, y]);
+            reachRight = true;
+          }
+        } else if (reachRight) {
+          reachRight = false;
+        }
+      }
+
+      pixelPos += canvas.width * 4;
+    }
+  }
+  ctx.putImageData(colorLayer, 0, 0);
+}
 
 document.addEventListener('click', (e) => {
   // change current color to red
@@ -141,6 +216,12 @@ document.addEventListener('click', (e) => {
   }
 });
 
+canvas.addEventListener('click', (e) => {
+  if (instrument === 0) {
+    fillArea(e.offsetX, e.offsetY);
+  }
+});
+
 canvas.addEventListener('mousedown', (e) => {
   isDrawing = true;
 
@@ -148,6 +229,10 @@ canvas.addEventListener('mousedown', (e) => {
     drawPixel(e);
   } else if (instrument === 3) {
     erasePixel(e);
+  } else if (instrument === 4) {
+    strokeData.x1 = e.offsetX;
+    strokeData.y1 = e.offsetY;
+    console.log(strokeData);
   }
 });
 
@@ -163,6 +248,9 @@ canvas.addEventListener('mousemove', (e) => {
     drawPixel(e);
   } else if (instrument === 3 && isDrawing) {
     erasePixel(e);
+  } else if (instrument === 4 && isDrawing) {
+    strokeData.x2 = e.offsetX;
+    strokeData.y2 = e.offsetY;
   }
 });
 
