@@ -5,6 +5,8 @@ import * as Color from './canvas/color-switch';
 import * as Tool from './canvas/tools';
 import * as Netlify from './netlify';
 
+const loginBtn = document.querySelector('.menu__login');
+
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 let ctxScale = 4;
@@ -13,7 +15,14 @@ let instrument = null;
 let isDrawing = false;
 let penSize = ctxScale;
 
-let strokeData = {
+let drawData = {
+  x1: null,
+  y1: null,
+  x2: null,
+  y2: null,
+};
+
+const strokeData = {
   x1: null,
   y1: null,
   x2: null,
@@ -127,13 +136,15 @@ canvas.addEventListener('mousedown', (e) => {
   isDrawing = true;
 
   if (instrument === 2) {
+    drawData.x1 = e.offsetX;
+    drawData.y1 = e.offsetY;
     Tool.drawPixel(e, ctxScale, penSize, Color.colorSwitcher.value);
-    strokeData.x1 = e.offsetX;
-    strokeData.y1 = e.offsetY;
   } else if (instrument === 3) {
     Tool.erasePixel(e, ctxScale, penSize);
   } else if (instrument === 4) {
-    // !!!
+    strokeData.x1 = e.offsetX;
+    strokeData.y1 = e.offsetY;
+    Tool.drawPixel(e, ctxScale, penSize, Color.colorSwitcher.value);
   }
 });
 
@@ -146,18 +157,29 @@ canvas.addEventListener('mouseout', () => {
 
 canvas.addEventListener('mousemove', (e) => {
   if (instrument === 2 && isDrawing) {
-    strokeData.x2 = e.offsetX;
-    strokeData.y2 = e.offsetY;
-    strokeData = Tool.drawStroke(strokeData, Color.colorSwitcher.value, ctxScale, penSize);
+    drawData.x2 = e.offsetX;
+    drawData.y2 = e.offsetY;
+    drawData = Tool.draw(drawData, Color.colorSwitcher.value, ctxScale, penSize);
   } else if (instrument === 3 && isDrawing) {
     Tool.erasePixel(e, ctxScale, penSize);
   } else if (instrument === 4 && isDrawing) {
-    // !!!
+    const oldImg = new Image();
+    oldImg.src = localStorage.getItem('data');
+    oldImg.onload = async () => {
+      ctxScale = +localStorage.getItem('scale');
+      ctx.drawImage(oldImg, 0, 0);
+      strokeData.x2 = e.offsetX;
+      strokeData.y2 = e.offsetY;
+      Tool.drawLine(strokeData, ctxScale, penSize, Color.colorSwitcher.value);
+    };
+    // strokeData.x2 = e.offsetX;
+    // strokeData.y2 = e.offsetY;
+    // Tool.drawLine(strokeData, ctxScale, penSize, Color.colorSwitcher.value);
   }
 });
 
 canvas.addEventListener('mouseup', () => {
-  if (instrument === 2 || instrument === 3) {
+  if (instrument === 2 || instrument === 3 || instrument === 4) {
     isDrawing = false;
   }
 });
@@ -208,7 +230,6 @@ Scale.size32Button.addEventListener('click', () => {
 });
 
 // github authorization
-const loginBtn = document.querySelector('.menu__login');
 loginBtn.addEventListener('click', (e) => {
   e.preventDefault();
   const authenticator = new Netlify.Default({});

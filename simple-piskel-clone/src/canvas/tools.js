@@ -121,7 +121,7 @@ function changePenSize(e, ctxScale, oldSize) {
   return newPenSize;
 }
 
-function drawStroke(data, color, ctxScale, penSize) {
+function draw(data, color, ctxScale, penSize) {
   const dx = Math.abs(data.x2 - data.x1);
   const dy = Math.abs(data.y2 - data.y1);
   const sx = (data.x1 < data.x2) ? 1 : -1;
@@ -149,7 +149,108 @@ function drawStroke(data, color, ctxScale, penSize) {
   return dataNew;
 }
 
+function drawLine(lineData, ctxScale, penSize, color) {
+  let {
+    x1, y1, x2, y2,
+  } = lineData;
+
+  x1 = Math.floor(x1 / ctxScale) * ctxScale;
+  y1 = Math.floor(y1 / ctxScale) * ctxScale;
+  x2 = Math.floor(x2 / ctxScale) * ctxScale;
+  y2 = Math.floor(y2 / ctxScale) * ctxScale;
+
+  let x = 0;
+  let y = 0;
+  let xe = 0;
+  let ye = 0;
+
+  // Calculate line deltas
+  const dx = x2 - x1;
+  const dy = y2 - y1;
+
+  // Create a positive copy of deltas (makes iterating easier)
+  const dx1 = Math.abs(dx);
+  const dy1 = Math.abs(dy);
+
+  // Calculate error intervals for both axis
+  let px = 2 * dy1 - dx1;
+  let py = 2 * dx1 - dy1;
+
+  // The line is X-axis dominant
+  if (dy1 <= dx1) {
+    // Line is drawn left to right
+    if (dx >= 0) {
+      x = x1;
+      y = y1;
+      xe = x2;
+    } else { // Line is drawn right to left (swap ends)
+      x = x2;
+      y = y2;
+      xe = x1;
+    }
+
+    ctx.fillStyle = color;
+    ctx.fillRect(x, y, penSize, penSize);
+
+    // Rasterize the line
+    for (let i = 0; x < xe; i += 1) {
+      x += ctxScale;
+
+      // Deal with octants...
+      if (px < 0) {
+        px += 2 * dy1;
+      } else {
+        if ((dx < 0 && dy < 0) || (dx > 0 && dy > 0)) {
+          y += ctxScale;
+        } else {
+          y -= ctxScale;
+        }
+        px += 2 * (dy1 - dx1);
+      }
+
+      // Draw pixel from line span at currently rasterized position
+      ctx.fillStyle = color;
+      ctx.fillRect(x, y, penSize, penSize);
+    }
+  } else { // The line is Y-axis dominant
+    // Line is drawn bottom to top
+    if (dy >= 0) {
+      x = x1;
+      y = y1;
+      ye = y2;
+    } else { // Line is drawn top to bottom
+      x = x2;
+      y = y2;
+      ye = y1;
+    }
+
+    ctx.fillStyle = color;
+    ctx.fillRect(x, y, penSize, penSize); // Draw first pixel
+
+    // Rasterize the line
+    for (let i = 0; y < ye; i += 1) {
+      y += ctxScale;
+
+      // Deal with octants...
+      if (py <= 0) {
+        py += 2 * dx1;
+      } else {
+        if ((dx < 0 && dy < 0) || (dx > 0 && dy > 0)) {
+          x += ctxScale;
+        } else {
+          x -= ctxScale;
+        }
+        py += 2 * (dx1 - dy1);
+      }
+
+      // Draw pixel from line span at currently rasterized position
+      ctx.fillStyle = color;
+      ctx.fillRect(x, y, penSize, penSize);
+    }
+  }
+}
+
 export {
   toolButtons, fill, pick, pencil, eraser, stroke, fillSame, drawPixel, erasePixel,
-  fillArea, fillPixelsSame, changePenSize, penSizesContainer, drawStroke,
+  fillArea, fillPixelsSame, changePenSize, penSizesContainer, draw, drawLine,
 };
