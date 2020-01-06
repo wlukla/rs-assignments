@@ -1,6 +1,6 @@
-const Model = require('../model.js');
+import Model from '../model';
 
-let model = new Model();
+const model = new Model();
 
 test('setPrevColor', () => {
   model.setPrevColor('#ff0000');

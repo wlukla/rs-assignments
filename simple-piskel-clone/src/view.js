@@ -94,4 +94,3 @@ class View {
 }
 
 export default View;
-module.exports = View;
