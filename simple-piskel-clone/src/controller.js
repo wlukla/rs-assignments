@@ -36,6 +36,12 @@ class Controller {
         Tool.fillArea(e, currentColor, canvas, ctx);
       } else if (this.model.currentTool === 5) {
         Tool.fillSame(currentColor, ctx, canvas);
+      } else if (this.model.currentTool === 1) {
+        this.model.prevColor = this.model.currentColor;
+        this.model.currentColor = Tool.pickColor(e, ctx);
+
+        this.view.colorSwitcher.value = this.model.currentColor;
+        this.view.prevColor.value = this.model.prevColor;
       }
     };
 
@@ -107,6 +113,13 @@ class Controller {
       this.view.prevColor.value = this.model.prevColor;
     };
 
+    this.handleAddFrameBtnListener = () => {
+      this.model.addFrame(this.model.emptyFrameData);
+      this.model.addFrameDataURL(this.model.emptyFrameDataURL);
+      this.showFrames();
+      console.log(this.model.framesDataURL);
+    };
+
     this.view.initToolsListeners(this.handleChangeTool);
     this.view.initSizeButtonsListeners(this.handleChangeCanvasScale);
     this.view.initColorSwitcherListener(this.handleColorSwitcherListener);
@@ -117,6 +130,33 @@ class Controller {
     this.view.initCanvasMousedownListener(this.handleMousedownListener);
     this.view.initCanvasMosueoutListener(this.handleCanvasMouseoutListener);
     this.view.initPrevColorListener(this.handlePrevColorListener);
+    this.view.initAddFrameBtnListener(this.handleAddFrameBtnListener);
+    this.initOnloadListener();
+  }
+
+  showFrames() {
+    const { framesDataURL } = this.model;
+    this.view.framesContainer.innerHTML = '';
+    for (let i = 0; i < framesDataURL.length; i += 1) {
+      const frameElement = document.createElement('div');
+      frameElement.classList.add('frame');
+      frameElement.style.backgroundImage = `url("${framesDataURL[i]}")`;
+      this.view.framesContainer.appendChild(frameElement);
+    }
+  }
+
+  initOnloadListener() {
+    window.addEventListener('load', () => {
+      this.view.colorSwitcher.value = this.model.currentColor;
+      this.view.prevColor.value = this.model.prevColor;
+
+      this.model.addFrame(this.view.ctx.getImageData(0, 0, 512, 512));
+      [this.model.emptyFrameData] = this.model.framesData;
+      this.model.addFrameDataURL(this.view.canvas.toDataURL());
+      [this.model.emptyFrameDataURL] = this.model.framesDataURL;
+      console.log(this.model.emptyFrameData);
+      this.showFrames();
+    });
   }
 }
 

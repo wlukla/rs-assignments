@@ -91,6 +91,10 @@ class View {
   initPrevColorListener(callback) {
     this.prevColor.addEventListener('click', callback);
   }
+
+  initAddFrameBtnListener(callback) {
+    this.addFrameBtn.addEventListener('click', callback);
+  }
 }
 
 export default View;

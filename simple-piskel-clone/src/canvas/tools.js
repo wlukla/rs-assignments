@@ -253,6 +253,28 @@ function fillSame(color, ctx, canvas) {
   ctx.putImageData(colorLayer, 0, 0);
 }
 
+function pickColor(e, ctx) {
+  const x = e.offsetX;
+  const y = e.offsetY;
+
+  const { data } = ctx.getImageData(x, y, 1, 1);
+  let r = data[0].toString(16);
+  let g = data[1].toString(16);
+  let b = data[2].toString(16);
+
+  if (r.length === 1) {
+    r = `0${r}`;
+  }
+  if (g.length === 1) {
+    g = `0${g}`;
+  }
+  if (b.length === 1) {
+    b = `0${b}`;
+  }
+
+  return `#${r}${g}${b}`;
+}
+
 export {
-  fillSame, drawPixel, erasePixel, draw, drawLine, fillArea,
+  fillSame, drawPixel, erasePixel, draw, drawLine, fillArea, pickColor,
 };

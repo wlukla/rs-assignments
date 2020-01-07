@@ -1,7 +1,9 @@
 class Model {
   constructor() {
-    this.frames = [];
     this.framesData = [];
+    this.framesDataURL = [];
+    this.emptyData = null;
+    this.emptyDataURL = null;
     this.currentFrame = 0; // !!! change with settings
 
     this.currentTool = 2; // !!! change with settings
@@ -10,7 +12,7 @@ class Model {
     this.penSize = 4; // !!! change with settings
 
     this.currentColor = '#ff0000'; // !!! change with settings
-    this.prevColor = null;
+    this.prevColor = '#000000';
     this.isDrawing = false;
 
     this.drawData = {
@@ -56,8 +58,12 @@ class Model {
   }
 
   // !!!
-  addFrame() {
-    this.frames.push(0);
+  addFrame(data) {
+    this.framesData.push(data);
+  }
+
+  addFrameDataURL(data) {
+    this.framesDataURL.push(data);
   }
 }
 
