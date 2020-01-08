@@ -57,13 +57,29 @@ class Model {
     this.ctxScale = scale;
   }
 
-  // !!!
   addFrame(data) {
     this.framesData.push(data);
   }
 
   addFrameDataURL(data) {
     this.framesDataURL.push(data);
+  }
+
+  deleteFrame(index) {
+    this.framesData.splice(index, 1);
+    this.framesDataURL.splice(index, 1);
+
+    if (index === this.currentFrame) {
+      this.currentFrame = index - 1;
+    }
+  }
+
+  duplicateFrame(index) {
+    const duplicatingFrameData = this.framesData[index];
+    const duplicatingFrameDataURL = this.framesDataURL[index];
+
+    this.framesData.splice(index, 0, duplicatingFrameData);
+    this.framesDataURL.splice(index, 0, duplicatingFrameDataURL);
   }
 }
 
