@@ -13,7 +13,11 @@ class View {
     this.framesContainer = document.querySelector('.frames-container');
     this.addFrameBtn = document.querySelector('.frames-container__button');
 
-    this.disableSmoothing();
+    this.previewContainer = document.querySelector('.preview-container');
+    this.previewElement = document.querySelector('.preview');
+    this.fpsChangerElement = document.querySelector('.fps-changer');
+    this.fpsValueElement = document.querySelector('.fps-value');
+    this.previewFullscreenButton = document.querySelector('.preview__fullscreen-icon');
   }
 
   disableSmoothing() {
@@ -94,6 +98,14 @@ class View {
 
   initAddFrameBtnListener(callback) {
     this.addFrameBtn.addEventListener('click', callback);
+  }
+
+  initFpsChangerListener(callback) {
+    this.fpsChangerElement.addEventListener('change', callback);
+  }
+
+  initPreviewFullscreenButtonListener(callback) {
+    this.previewFullscreenButton.addEventListener('click', callback);
   }
 }
 

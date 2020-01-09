@@ -123,6 +123,19 @@ class Controller {
       this.showFrames();
     };
 
+    this.handleFpsChangerListener = () => {
+      const { fpsChangerElement } = this.view;
+      this.model.fps = fpsChangerElement.value;
+      this.view.fpsValueElement.innerHTML = fpsChangerElement.value;
+      this.startPreview(this.model.fps);
+    };
+
+    this.handleFullscreenButtonListener = () => {
+      Tool.fullScreen(this.view.previewContainer);
+      this.view.previewElement.classList.add('preview_fullscreen');
+      this.view.previewFullscreenButton.style.display = 'none';
+    };
+
     this.view.initToolsListeners(this.handleChangeTool);
     this.view.initSizeButtonsListeners(this.handleChangeCanvasScale);
     this.view.initColorSwitcherListener(this.handleColorSwitcherListener);
@@ -134,7 +147,36 @@ class Controller {
     this.view.initCanvasMosueoutListener(this.handleCanvasMouseoutListener);
     this.view.initPrevColorListener(this.handlePrevColorListener);
     this.view.initAddFrameBtnListener(this.handleAddFrameBtnListener);
+    this.view.initFpsChangerListener(this.handleFpsChangerListener);
+    this.view.initPreviewFullscreenButtonListener(this.handleFullscreenButtonListener);
     this.initOnloadListener();
+
+    this.animate = () => {
+      window.requestAnimationFrame(this.animate);
+
+      this.model.now = Date.now();
+      this.model.elapsed = this.model.now - this.model.then;
+
+      const { elapsed, fpsInterval, now } = this.model;
+
+      if (elapsed > fpsInterval) {
+        this.model.then = now - (elapsed % fpsInterval);
+
+        const { framesDataURL, previewIndex } = this.model;
+        this.view.previewElement.style.backgroundImage = `url(${framesDataURL[previewIndex]})`;
+        this.model.previewIndex += 1;
+        if (this.model.previewIndex === framesDataURL.length) {
+          this.model.previewIndex = 0;
+        }
+      }
+    };
+  }
+
+  startPreview(fps) {
+    this.model.fpsInterval = 1000 / fps;
+    this.model.then = Date.now();
+    this.model.startTime = this.model.then;
+    this.animate();
   }
 
   showFrames() {
@@ -168,7 +210,6 @@ class Controller {
       btn.addEventListener('click', () => {
         if (this.model.framesData.length > 1) {
           this.model.deleteFrame(j);
-          console.log(this.model.framesData);
           this.showFrames();
         }
       });
@@ -203,6 +244,33 @@ class Controller {
       this.model.addFrameDataURL(this.view.canvas.toDataURL());
       [this.model.emptyDataURL] = this.model.framesDataURL;
       this.showFrames();
+
+      this.startPreview(1);
+
+      document.addEventListener('fullscreenchange', () => {
+        if (!document.fullscreenElement) {
+          this.view.previewElement.classList.remove('preview_fullscreen');
+          this.view.previewFullscreenButton.style.display = 'block';
+        }
+      });
+      document.addEventListener('webkitfullscreenchange', () => {
+        if (!document.webkitFullscreenElement) {
+          this.view.previewElement.classList.remove('preview_fullscreen');
+          this.view.previewFullscreenButton.style.display = 'block';
+        }
+      });
+      document.addEventListener('mozfullscreenchange', () => {
+        if (!document.mozFullscreenElement) {
+          this.view.previewElement.classList.remove('preview_fullscreen');
+          this.view.previewFullscreenButton.style.display = 'block';
+        }
+      });
+      document.addEventListener('MSFullscreenChange', () => {
+        if (!document.msFullscreenElement) {
+          this.view.previewElement.classList.remove('preview_fullscreen');
+          this.view.previewFullscreenButton.style.display = 'block';
+        }
+      });
     });
   }
 }

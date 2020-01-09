@@ -275,6 +275,28 @@ function pickColor(e, ctx) {
   return `#${r}${g}${b}`;
 }
 
+function fullScreen(element) {
+  if ('fullscreenEnabled' in document
+  || 'webkitFullscreenEnabled' in document
+  || 'mozFullScreenEnabled' in document
+  || 'msFullscreenEnabled' in document) {
+    if (document.fullscreenEnabled
+      || document.webkitFullscreenEnabled
+      || document.mozFullScreenEnabled
+      || document.msFullscreenEnabled) {
+      if ('requestFullscreen' in element) {
+        element.requestFullscreen();
+      } else if ('webkitRequestFullscreen' in element) {
+        element.webkitRequestFullscreen();
+      } else if ('mozRequestFullScreen' in element) {
+        element.mozRequestFullScreen();
+      } else if ('msRequestFullscreen' in element) {
+        element.msRequestFullscreen();
+      }
+    }
+  }
+}
+
 export {
-  fillSame, drawPixel, erasePixel, draw, drawLine, fillArea, pickColor,
+  fillSame, drawPixel, erasePixel, draw, drawLine, fillArea, pickColor, fullScreen,
 };

@@ -7,3 +7,4 @@ import View from './view';
 import Controller from './controller';
 
 const app = new Controller(new Model(), new View());
+app.view.disableSmoothing();

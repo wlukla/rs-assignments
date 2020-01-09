@@ -27,6 +27,13 @@ class Model {
       x2: null,
       y2: null,
     };
+
+    this.previewIndex = 0;
+    this.fps = null;
+    this.fpsInterval = null;
+    this.startTime = null;
+    this.now = null;
+    this.elapsed = null;
   }
 
   flipColors() {

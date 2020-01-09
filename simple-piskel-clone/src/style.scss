@@ -296,3 +296,29 @@
     right: 4px;
   }
 }
+
+.preview {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  border: 1px solid black;
+  background-size: 100% 100%;
+
+  &__fullscreen-icon {
+    position: absolute;
+    right: 4px;
+    bottom: 4px;
+  }
+
+  &_fullscreen {
+    height: 100vh;
+    width: 100vh;
+  }
+}
+
+.preview-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+}
