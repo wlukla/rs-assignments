@@ -11,8 +11,8 @@ class Model {
     this.ctxScale = 4; // !!! change with settings
     this.penSize = 4; // !!! change with settings
 
-    this.currentColor = '#ff0000'; // !!! change with settings
-    this.prevColor = '#000000';
+    this.currentColor = '#000000';
+    this.prevColor = '#ffffff';
     this.isDrawing = false;
 
     this.drawData = {
@@ -34,6 +34,15 @@ class Model {
     this.startTime = null;
     this.now = null;
     this.elapsed = null;
+
+    this.keys = {
+      fillBucket: 'f',
+      chooseColor: 'c',
+      pencil: 'p',
+      eraser: 'e',
+      stroke: 's',
+      fillSame: 'g',
+    };
   }
 
   flipColors() {
@@ -61,7 +70,9 @@ class Model {
   }
 
   setScale(scale) {
+    const oldScale = this.ctxScale;
     this.ctxScale = scale;
+    this.setPenSize(this.penSize * (scale / oldScale));
   }
 
   addFrame(data) {

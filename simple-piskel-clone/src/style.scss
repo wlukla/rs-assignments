@@ -1,10 +1,11 @@
 * {
   margin: 0;
   padding: 0;
+  user-select: none;
 }
 
 .header {
-  position: relative; // for menu
+  position: relative;
   display: flex;
   justify-content: flex-start;
   width: 100%;
@@ -321,4 +322,21 @@
   align-items: center;
   justify-content: center;
   background-color: white;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 50px;
+  left: 50px;
+  background-color: lightgrey;
+  z-index: 999;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  overflow: scroll;
 }

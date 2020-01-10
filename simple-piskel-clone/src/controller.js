@@ -136,6 +136,23 @@ class Controller {
       this.view.previewFullscreenButton.style.display = 'none';
     };
 
+    this.handleKeyboardListener = (e) => {
+      const { keys } = this.model;
+      if (e.key === keys.fillBucket) {
+        this.model.currentTool = 0;
+      } else if (e.key === keys.chooseColor) {
+        this.model.currentTool = 1;
+      } else if (e.key === keys.pencil) {
+        this.model.currentTool = 2;
+      } else if (e.key === keys.eraser) {
+        this.model.currentTool = 3;
+      } else if (e.key === keys.stroke) {
+        this.model.currentTool = 4;
+      } else if (e.key === keys.fillSame) {
+        this.model.currentTool = 5;
+      }
+    };
+
     this.view.initToolsListeners(this.handleChangeTool);
     this.view.initSizeButtonsListeners(this.handleChangeCanvasScale);
     this.view.initColorSwitcherListener(this.handleColorSwitcherListener);
@@ -149,6 +166,7 @@ class Controller {
     this.view.initAddFrameBtnListener(this.handleAddFrameBtnListener);
     this.view.initFpsChangerListener(this.handleFpsChangerListener);
     this.view.initPreviewFullscreenButtonListener(this.handleFullscreenButtonListener);
+    this.view.initKeyboardListener(this.handleKeyboardListener);
     this.initOnloadListener();
 
     this.animate = () => {

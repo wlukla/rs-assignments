@@ -1,5 +1,8 @@
 class View {
   constructor() {
+    this.window = window;
+
+    this.navButton = document.querySelector('.nav');
     this.toolButtons = document.querySelectorAll('.sheet__tool');
     this.penSizes = document.querySelectorAll('.pen-sizes__item');
 
@@ -101,11 +104,19 @@ class View {
   }
 
   initFpsChangerListener(callback) {
-    this.fpsChangerElement.addEventListener('change', callback);
+    this.fpsChangerElement.addEventListener('input', callback);
   }
 
   initPreviewFullscreenButtonListener(callback) {
     this.previewFullscreenButton.addEventListener('click', callback);
+  }
+
+  initKeyboardListener(callback) {
+    this.window.addEventListener('keypress', callback);
+  }
+
+  initNavButtonListener(callback) {
+    this.navButton.addEventListener('click', callback);
   }
 }
 

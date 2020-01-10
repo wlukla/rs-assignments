@@ -32,15 +32,6 @@ test('setScale', () => {
   expect(model.ctxScale).toBe(32);
 });
 
-test('addFrame', () => {
-  model.addFrame();
-  expect(model.frames.length).toBe(1);
-  model.addFrame();
-  expect(model.frames.length).toBe(2);
-  model.addFrame();
-  expect(model.frames.length).toBe(3);
-});
-
 test('flipColors', () => {
   model.setPrevColor('#ff0000');
   model.setCurrentColor('#000000');
@@ -48,4 +39,54 @@ test('flipColors', () => {
 
   expect(model.currentColor).toBe('#ff0000');
   expect(model.prevColor).toBe('#000000');
+});
+
+test('addFrame', () => {
+  model.addFrame();
+  expect(model.framesData.length).toBe(1);
+  model.addFrame();
+  expect(model.framesData.length).toBe(2);
+  model.addFrame();
+  expect(model.framesData.length).toBe(3);
+});
+
+test('addFrameDataURL', () => {
+  const tempModel = new Model();
+
+  tempModel.addFrameDataURL();
+  expect(tempModel.framesDataURL.length).toBe(1);
+  tempModel.addFrameDataURL();
+  expect(tempModel.framesDataURL.length).toBe(2);
+  tempModel.addFrameDataURL();
+  expect(tempModel.framesDataURL.length).toBe(3);
+});
+
+test('deleteFrame', () => {
+  const tempModel = new Model();
+
+  tempModel.addFrameDataURL();
+  tempModel.addFrame();
+
+  tempModel.deleteFrame(0);
+
+  expect(tempModel.framesData.length).toBe(0);
+  expect(tempModel.framesDataURL.length).toBe(0);
+
+  tempModel.currentFrame = 1;
+
+  tempModel.addFrameDataURL();
+  tempModel.addFrame();
+
+  tempModel.deleteFrame(0);
+
+  expect(tempModel.framesData.length).toBe(0);
+  expect(tempModel.framesDataURL.length).toBe(0);
+  expect(tempModel.currentFrame === 0);
+});
+
+test('duplicateFrame', () => {
+  model.duplicateFrame(1);
+
+  expect(model.framesData[1]).toBe(model.framesData[2]);
+  expect(model.framesDataURL[1]).toBe(model.framesDataURL[2]);
 });
