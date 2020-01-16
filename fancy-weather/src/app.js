@@ -16,6 +16,10 @@ import './assets/img/weather-icons/id7.svg';
 import './assets/img/weather-icons/id8.svg';
 import './assets/img/weather-icons/id80.svg';
 
+import './assets/img/arrow-down.svg';
+import './assets/img/refresh-icon.svg';
+import './assets/img/voice-input.svg';
+
 window.addEventListener('load', async () => {
   await Location.setUserPosition();
   const city = Location.cityElement.innerHTML.replace(' ', '');
