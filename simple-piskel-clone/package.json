@@ -1,0 +1,41 @@
+{
+  "name": "codejam-image-api",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "dependencies": {
+    "lodash": "^4.17.15",
+    "normalize.css": "^8.0.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "babel-jest": "^24.9.0",
+    "babel-loader": "^8.0.6",
+    "css-loader": "^3.2.0",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "file-loader": "^4.2.0",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "jest": "^24.9.0",
+    "node-sass": "^4.13.0",
+    "sass-loader": "^8.0.0",
+    "scss-loader": "0.0.1",
+    "style-loader": "^1.0.0",
+    "url-loader": "^2.2.0",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.9.0"
+  },
+  "scripts": {
+    "test": "jest",
+    "build": "webpack --config webpack.config.js",
+    "start": "webpack-dev-server --config webpack.config.js",
+    "lint": "eslint ./src/index.js",
+    "coverage": "jest --coverage --coverage-reporters=lcov"
+  },
+  "author": "",
+  "license": "ISC"
+}

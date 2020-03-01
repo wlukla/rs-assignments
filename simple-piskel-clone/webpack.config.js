@@ -4,10 +4,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   mode: 'development',
   entry: {
-    app: './src/app.js',
+    app: './src/index.js',
   },
   output: {
-    filename: 'app.js',
+    filename: 'index.js',
     path: path.resolve(__dirname, 'dist'),
   },
   devServer: {
@@ -31,17 +31,12 @@ module.exports = {
       {
         test: /\.(png|svg|jpg|gif)$/,
         use: [{
-          loader: 'file-loader',
+          loader: 'url-loader',
           options: {
             limit: 8000, // Convert images < 8kb to base64 strings
-            name: 'assets/img/[name].[ext]',
+            name: 'assets/img/[hash]-[name].[ext]',
           },
         }],
-      },
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: 'babel-loader',
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
@@ -49,6 +44,7 @@ module.exports = {
           'file-loader',
         ],
       },
+      { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' },
     ],
   },
   plugins: [
@@ -57,4 +53,5 @@ module.exports = {
       filename: './index.html',
     }),
   ],
+
 };

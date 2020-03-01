@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>CodeJam - Pallete</title>
+</head>
+<body>
+  <header class="header">
+    <nav class="nav">
+      <img class="nav__icon" src="assets/img/nav-icon.svg" alt="menu">
+      <div class="options">
+        <button class="export-button">Export to .gif</button>
+      </div>
+    </nav>
+    <h1 class="header__heading">CodeJam - Pallete</h1>
+    <div class="menu">
+      <button class="menu__login">Login</button>
+    </div>
+  </header>
+  <main class="main">
+    <section class="sheets-container">
+        <div class="sheet">
+          <ul class="sheet__list">
+            <li class="tool sheet__tool">
+              <span class="tool__name">Fill bucket</span>
+            </li>
+            <li class="tool sheet__tool">
+              <span class="tool__name">Choose color</span>
+            </li>
+            <li class="tool sheet__tool">
+              <span class="tool__name">Pencil</span>
+            </li>
+            <li class="tool sheet__tool">
+              <span class="tool__name">Eraser</span>
+            </li>
+            <li class="tool sheet__tool">
+              <span class="tool__name">stroke</span>
+            </li>
+            <li class="tool sheet__tool">
+              <span class="tool__name">Fill pixels same color </span>
+            </li>
+          </ul>
+          <ul class="pen-sizes">
+            <li class="pen-sizes__item pen-sizes__item_active"></li>
+            <li class="pen-sizes__item"></li>
+            <li class="pen-sizes__item"></li>
+            <li class="pen-sizes__item"></li>
+          </ul>
+        </div>
+        <div class="sheet">
+          <ul class="sheet__list">
+            <li class="color sheet__color">
+              <input class="color__icon color__icon_current" id="color-current" type="color" value="#C4C4C4">
+              <label class="color__text">Current color</label>
+            </li>
+            <li class="color sheet__color">
+              <input class="color__icon color__icon_prev" id="color-prev" type="color" value="#41F795">
+              <label class="color__text">Prev color</label>
+            </li>
+          </ul>
+        </div>
+      </section>
+    <section class="frames">
+      <div class="frames-container">
+        <div class="frame"></div>
+      </div>
+      <button class="frames-container__button">Add frame</button>
+    </section>
+    <section class="canvas-container">
+      <canvas class="canvas" id="canvas" width="512" height="512"></canvas>
+    </section>
+    <section class="size-switchers-container">
+      <div class="sheet">
+        <ul class="sheet__list">
+          <li class="size-switcher sheet__size-switcher">
+            <img src="assets/img/paint-bucket.svg" alt="paint bucket tool icon" class="size-switcher__icon">
+            <span class="size-switcher__name">128x128</span>
+          </li>
+          <li class="size-switcher sheet__size-switcher">
+            <img src="assets/img/eye-dropper.svg" alt="choose color tool icon" class="size-switcher__icon">
+            <span class="size-switcher__name">64x64</span>
+          </li>
+          <li class="size-switcher sheet__size-switcher">
+            <img src="assets/img/arrows-alt.svg" alt="move tool icon" class="size-switcher__icon">
+            <span class="size-switcher__name">32x32</span>
+          </li>
+        </ul>
+      </div>
+      <div class="preview-container">
+        <div class="preview">
+          <img class="preview__fullscreen-icon" src="assets/img/fullscreen-icon.svg" alt="fullscreen icon">
+        </div>
+      </div>
+      <input class="fps-changer" type="range" min="1" max="24" value="1" step="1">
+      <span class="fps-value">1</span>
+    </section>
+  </main>
+</body>
+</html>
